@@ -956,10 +956,6 @@
 
    alpha_fescav == 4.756468797564688e-07
 
-!  ffe_sed_max: Iron chemistry [micromol Fe m-2 d-1]
-
-   ffe_sed_max == 170
-
 !  beta_fescav: Iron chemistry [mol N-1 sec-1]
 !  beta_fescav == 0.0/spery
 

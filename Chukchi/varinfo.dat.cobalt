@@ -1259,11 +1259,11 @@
   'r2dvar'
   1.0d0
 
-'friver'
+'Runoff'
   'Fresh water runoff from land'
   'kg/s/m^2'
   'runoff, scalar, series'
-  'time'
+  'runoff_time'
   'idRunoff'
   'r2dvar'
   1.0d0
@@ -2101,33 +2101,33 @@
 
 !
 !------------------------------------------------------------------------------
-!  Atmospheric forcing variables from JRA55-do.
+!  Atmospheric forcing variables.
 !------------------------------------------------------------------------------
 !
 
-'psl'                                              ! Input
+'Pair'                                             ! Input
   'surface air pressure'
-  'Pascal'                                         ! [ROMS wants millibar]
+  'Pascal'                                       ! [ROMS wants millibar]
   'Pair, scalar, series'
-  'time'
+  'pair_time'
   'idPair'
   'r2dvar'
   0.01d0
 
-'tas_10m'                                          ! Input
+'Tair'                                             ! Input
   'surface air temperature'
   'Celsius'                                        ! [Kelvin]
   'Tair, scalar, series'
-  'time'
+  'tair_time'
   'idTair'
   'r2dvar'
   1.0d0
 
-'huss_10m'                                         ! Input
+'Qair'                                             ! Input
   'surface air relative humidity'
   'kg/kg'                                          ! [kg/kg]
   'Qair, scalar, series'
-  'time'
+  'qair_time'
   'idQair'
   'r2dvar'
   1.00d0                                           ! was percent
@@ -2141,11 +2141,11 @@
   'r2dvar'
   1.0d0
 
-'rsds'                                             ! Input/Output
+'swrad'                                            ! Input/Output
   'solar shortwave radiation flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
   'shortwave radiation, scalar, series'            ! [Celsius m/s]
-  'time'
+  'srf_time'                                       ! Output: [Watt/m2]
   'idSrad'
   'r2dvar'
   1.0d0
@@ -2156,24 +2156,6 @@
   'albedo, scalar, series'                         ! [Celsius m/s]
   'albedo_time'                                    ! Output: [fraction]
   'idAlbe'
-  'r2dvar'
-  1.0d0
-
-'rlds'                                             ! Input
-  'downwelling longwave radiation flux'
-  'watt meter-2'                                   ! Input:  [Watt/m2]
-  'downwelling longwave radiation, scalar, series' ! [Celsius m/s]
-  'time'
-  'idLdwn'
-  'r2dvar'
-  1.0d0
-
-'rlds'                                             ! Input/Output
-  'net longwave radiation flux'
-  'watt meter-2'                                   ! Input:  [Watt/m2]
-  'longwave radiation, scalar, series'             ! [Celsius m/s]
-  'time'
-  'idLrad'
   'r2dvar'
   1.0d0
 
@@ -2226,6 +2208,24 @@
 
 ! end atmospheric forcing for Cobalt BGC model
 
+'lwrad_down'                                       ! Input
+  'downwelling longwave radiation flux'
+  'watt meter-2'                                   ! Input:  [Watt/m2]
+  'downwelling longwave radiation, scalar, series' ! [Celsius m/s]
+  'lrf_time'
+  'idLdwn'
+  'r2dvar'
+  1.0d0
+
+'lwrad'                                            ! Input/Output
+  'net longwave radiation flux'
+  'watt meter-2'                                   ! Input:  [Watt/m2]
+  'longwave radiation, scalar, series'             ! [Celsius m/s]
+  'lrf_time'                                       ! Output: [Watt/m2]
+  'idLrad'
+  'r2dvar'
+  1.0d0
+
 'latent'                                           ! Input/Output
   'net latent heat flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
@@ -2244,20 +2244,20 @@
   'r2dvar'
   1.0d0
 
-'prrn'                                             ! Input
+'rain'                                             ! Input
   'rain fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'rain, scalar, series'
-  'time'
+  'rain_time'
   'idrain'
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'prsn'                                             ! Input
+'snow'                                             ! Input
   'snow fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'snow, scalar, series'
-  'time'
+  'snow_time'
   'idsnow'
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
@@ -2271,20 +2271,20 @@
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'uas_10m'                                          ! Input
+'Uwind'                                            ! Input
   'surface u-wind component'
   'meter second-1'                                 ! [m/s]
   'u-wind, scalar, series'
-  'time'
+  'wind_time'
   'idUair'
   'r2dvar'
   1.0d0
 
-'vas_10m'                                          ! Input
+'Vwind'                                            ! Input
   'surface v-wind component'
   'meter second-1'                                 ! [m/s]
   'v-wind, scalar, series'
-  'time'
+  'wind_time'
   'idVair'
   'r2dvar'
   1.0d0
@@ -3022,7 +3022,7 @@
 'temp'                                             ! Input
   'potential temperature functional'
   'Celsius'                                        ! [Celsius]
-  'temp, scalar, series'
+  'temp_time, scalar, series'
   'temp_time'
   'idTads(itemp)'
   'r3dvar'
@@ -3031,7 +3031,7 @@
 'salt'                                             ! Input
   'salinity functional'
   'nondimensional'                                 ! [PSU]
-  'salt, scalar, series'
+  'salt_time, scalar, series'
   'salt_time'
   'idTads(isalt)'
   'r3dvar'
@@ -3096,7 +3096,7 @@
 'temp'                                             ! Input
   'potential temperature impulse forcing'
   'Celsius'                                        ! [Celsius]
-  'temp, scalar, series'
+  'temp_time, scalar, series'
   'temp_time'
   'idTtlf(itemp)'
   'r3dvar'
@@ -3105,7 +3105,7 @@
 'salt'                                             ! Input
   'salinity functional'
   'nondimensional'                                 ! [PSU]
-  'salt, scalar, series'
+  'salt_time, scalar, series'
   'salt_time'
   'idTtlf(isalt)'
   'r3dvar'
@@ -4874,24 +4874,6 @@
   'prod_n_100_sm, scalar, series'
   'ocean_time'
   'iDbio2(iprod_n_100_sm)'
-  'r2dvar'
-  1.0d0
-
-'no3denit_sed'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'no3denit_sed, scalar, series'
-  'ocean_time'
-  'iDbio2(ino3denit_sed)'
-  'r2dvar'
-  1.0d0
-
-'jno3denit_wc_vint'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'jno3denit_wc_vint, scalar, series'
-  'ocean_time'
-  'iDbio2(ijno3denit_wc_vint)'
   'r2dvar'
   1.0d0
 
@@ -8369,6 +8351,7 @@
   1.0d0
 
 !-------------------------------------------------------------
+! Cobalt variables here again ?
 ! BEST_NPZ variables
 !-------------------------------------------------------------
 

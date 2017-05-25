@@ -12,7 +12,7 @@
 **  Options for NWGOA simulation
 */
 
-#undef NO_HIS
+#define NO_HIS
 #define HDF5
 #define DEFLATE
 #define PERFECT_RESTART
@@ -46,22 +46,25 @@
 /* ice */
 
 #ifdef SOLVE3D
-# undef  ICE_MODEL
+# define  ICE_MODEL
 # ifdef ICE_MODEL
-#  define ANA_ICE
+#  undef  ANA_ICE
 #  undef  OUTFLOW_MASK
-#  undef  FASTICE_CLIMATOLOGY
-#  define  ICE_THERMO
-#  define  ICE_MK
-#  define  ICE_MOMENTUM
-#  define  ICE_MOM_BULK
-#  define  ICE_EVP
-#  define  ICE_STRENGTH_QUAD
-#  define  ICE_ADVECT
-#  define  ICE_SMOLAR
-#  define  ICE_UPWIND
-#  define  ICE_BULK_FLUXES
-#  define  ICE_I_O
+#  define SNOWFALL
+#  define ICE_LANDFAST
+#  define ICE_THERMO
+#  define ICE_MK
+#  define ICE_MOMENTUM
+#  define ICE_MOM_BULK
+#  define ICE_EVP
+#  define ICE_STRENGTH_QUAD
+#  define ICE_ADVECT
+#  define ICE_SMOLAR
+#  define ICE_UPWIND
+#  define ICE_BULK_FLUXES
+#  define ICE_I_O
+#  define ICE_DIAGS
+#  define ICE_CONVSNOW
 # endif
 #endif
 
@@ -121,7 +124,7 @@
 #  undef LMD_BKPP
 #  define LMD_NONLOCAL
 #  define LMD_SHAPIRO
-#  undef LMD_DDMIX
+#  define LMD_DDMIX
 # endif
 
 # undef GLS_MIXING
@@ -151,8 +154,8 @@
 #  undef ANA_SRFLUX
 #  undef ALBEDO_CLOUD
 #  define ALBEDO_CURVE  /* for water */
-#  define ICE_ALB_EC92  /* for ice */
-#  undef ALBEDO_CSIM   /* for ice */
+#  undef ICE_ALB_EC92  /* for ice */
+#  define ALBEDO_CSIM   /* for ice */
 #  undef ALBEDO_FILE  /* for both */
 #  undef LONGWAVE
 # endif
@@ -173,8 +176,8 @@
 
 /* Not using Runoff now */
 #ifdef SOLVE3D
-# undef RUNOFF
-# define ONE_TRACER_SOURCE
+# define RUNOFF
+# undef ONE_TRACER_SOURCE
 #endif
 
 /* tides */
@@ -219,7 +222,6 @@
 */
 #define BIOLOGY
 #define BIO_COBALT
-#undef BIO_UMAINE
 /* #define DEBUG_COBALT */
 /*#define COBALT_CONSERVATION_TEST */
 /*#define COBALT_NOSOURCE */
@@ -239,20 +241,4 @@
 # define ANA_BPFLUX        /* analytical bottom passive tracers fluxes */
 # define ANA_SPFLUX        /* analytical surface passive tracers fluxes */
 # undef COASTDIAT
-#endif
-
-
-#ifdef BIO_UMAINE
-# define CARBON
-# define OXYGEN
-# define PRIMARY_PROD
-# define SINK_OP2
-# define TALK_NONCONSERV
-# undef OPTIC_UMAINE
-# define OPTIC_MANIZZA
-# define ANA_BPFLUX        /* analytical bottom passive tracers fluxes */
-# define ANA_SPFLUX        /* analytical surface passive tracers fluxes */
-# define IRON_LIMIT        /* Add iron as passive Nth tracer */
-# define IRON_RELAX
-# undef  IRON_RSIN         /* Not implemented yet in umaine.h */
 #endif
