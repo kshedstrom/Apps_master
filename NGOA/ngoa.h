@@ -12,7 +12,7 @@
 **  Options for NWGOA simulation
 */
 
-#undef NO_HIS
+#define NO_HIS
 #define HDF5
 #define DEFLATE
 #define PERFECT_RESTART
@@ -228,7 +228,7 @@
 #if defined BIO_COBALT
 # define OPTIC_MANIZZA
 # define COBALT_MINERALS
-# define COBALT_PHOSPHORUS
+# undef COBALT_PHOSPHORUS
 # define COBALT_IRON
 # define NO_IRON_COAST
 # define COBALT_CARBON
