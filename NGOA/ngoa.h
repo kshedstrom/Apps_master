@@ -14,8 +14,9 @@
 
 #define NO_HIS
 #define HDF5
-#define DEFLATE
+#undef DEFLATE
 #define PERFECT_RESTART
+#undef OFFLINE_BIOLOGY
 
 /* general */
 
@@ -25,13 +26,14 @@
 #define SOLVE3D
 #define SALINITY
 #ifdef SOLVE3D
-# define SPLINES_VDIFF
-# define SPLINES_VVISC
+# undef SPLINES_VDIFF
+# undef SPLINES_VVISC
 # define RI_SPLINES
 #endif
 #undef FLOATS
 #define STATIONS
 #define WET_DRY
+#define IMPLICIT_NUDGING
 
 #undef T_PASSIVE
 #ifdef T_PASSIVE
@@ -43,25 +45,29 @@
 # define AGE_MEAN
 #endif
 
+#ifdef OFFLINE_BIOLOGY
+# define OCLIMATOLOGY
+# define AKTCLIMATOLOGY
+#endif
+
 /* ice */
 
 #ifdef SOLVE3D
 # undef  ICE_MODEL
 # ifdef ICE_MODEL
 #  define ANA_ICE
-#  undef  OUTFLOW_MASK
-#  undef  FASTICE_CLIMATOLOGY
-#  define  ICE_THERMO
-#  define  ICE_MK
-#  define  ICE_MOMENTUM
-#  define  ICE_MOM_BULK
-#  define  ICE_EVP
-#  define  ICE_STRENGTH_QUAD
-#  define  ICE_ADVECT
-#  define  ICE_SMOLAR
-#  define  ICE_UPWIND
-#  define  ICE_BULK_FLUXES
-#  define  ICE_I_O
+#  define ICE_THERMO
+#  define ICE_MK
+#  define ICE_MOMENTUM
+#  define ICE_MOM_BULK
+#  define ICE_EVP
+#  define ICE_STRENGTH_QUAD
+#  define ICE_ADVECT
+#  define ICE_SMOLAR
+#  define ICE_UPWIND
+#  define ICE_BULK_FLUXES
+#  define ICE_I_O
+#  define ICE_DIAGS
 # endif
 #endif
 
@@ -100,7 +106,6 @@
 #undef VISC_3DCOEF
 #define MIX_S_UV
 #define VISC_GRID
-#undef SPONGE
 
 #ifdef SOLVE3D
 # undef TS_DIF2
@@ -118,14 +123,18 @@
 #  define LMD_RIMIX
 #  define LMD_CONVEC
 #  define LMD_SKPP
+#  define LI_FOX_KEMPER
 #  undef LMD_BKPP
 #  define LMD_NONLOCAL
 #  define LMD_SHAPIRO
 #  undef LMD_DDMIX
+#  define LIMIT_VDIFF
 # endif
 
 # undef GLS_MIXING
 # undef MY25_MIXING
+# undef NN_MIXING
+# undef RR_MIXING
 
 # if defined GLS_MIXING || defined MY25_MIXING
 #  define KANTHA_CLAYSON
@@ -133,7 +142,6 @@
 #  define CRAIG_BANNER
 #  define CHARNOK
 #  undef GERBI_TKE_FLUX
-#  undef AKLIMIT
 # endif
 #endif
 
@@ -174,14 +182,16 @@
 /* Not using Runoff now */
 #ifdef SOLVE3D
 # undef RUNOFF
+/* total hack for getting debug to compile */
 # define ONE_TRACER_SOURCE
+# undef TWO_D_TRACER_SOURCE
 #endif
 
 /* tides */
 
 #define LTIDES
-#ifdef LTIDES
-# if defined AVERAGES /* && !defined USE_DEBUG */
+#if defined LTIDES && !defined OFFLINE_BIOLOGY
+# if defined AVERAGES && !defined USE_DEBUG
 #  define FILTERED
 # endif
 # define SSH_TIDES
@@ -194,11 +204,9 @@
 
 # define UV_DRAG_GRID
 # define ANA_DRAG
-# define LIMIT_BSTRESS
-# define UV_QDRAG
-#else
-# define UV_QDRAG
 #endif
+#define LIMIT_BSTRESS
+#define UV_QDRAG
 
 /* Boundary conditions...careful with grid orientation */
 
@@ -217,9 +225,7 @@
 /*
 **  Biological model options.
 */
-#define BIOLOGY
 #define BIO_COBALT
-#undef BIO_UMAINE
 /* #define DEBUG_COBALT */
 /*#define COBALT_CONSERVATION_TEST */
 /*#define COBALT_NOSOURCE */
@@ -235,10 +241,11 @@
 # define DIAGNOSTICS_BIO
 /*# define BENTHIC  */
 /*# define TIMESERIES */
+# undef ANA_ALK_DIC
 # undef ANA_BIOLOGY        /* analytical biology initial conditions */
 # define ANA_BPFLUX        /* analytical bottom passive tracers fluxes */
 # define ANA_SPFLUX        /* analytical surface passive tracers fluxes */
-# undef COASTDIAT
+# define COASTDIAT
 #endif
 
 

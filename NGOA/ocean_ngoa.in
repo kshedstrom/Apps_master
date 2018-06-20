@@ -3,7 +3,7 @@
 !
 !svn $Id$
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2015 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2017 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /center1/w/kshedstrom/NGOA/External/varinfo.dat.cobalt
+     VARNAME = /import/c1/AKWATERS/kshedstrom/NGOA/External/varinfo.dat.cobalt
 
 ! Number of nested grids.
 
@@ -106,9 +106,9 @@ GridsInLayer =  1
 ! shared-memory configurations used to determine tile horizontal range
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
-       NtileI == 3                               ! I-direction partition
+       NtileI == 6                               ! I-direction partition
 ! ORDER MATTERS HERE!
-       NtileJ == 8                              ! J-direction partition
+       NtileJ == 32                              ! J-direction partition
 
 ! Set lateral boundary conditions keyword. Notice that a value is expected
 ! for each boundary segment per nested grid for each state variable.
@@ -200,10 +200,8 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-      NTIMES == 108000
-!     NTIMES == 216000
-!     NTIMES == 324000
-!     NTIMES == 432000
+!     NTIMES == 263520
+      NTIMES == 237600
           DT == 120.0d0
 !         DT == 100.0d0
      NDTFAST == 10
@@ -225,9 +223,9 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Input/Output parameters.
 
-       NRREC == 0
+       NRREC == -1
    LcycleRST == T
-        NRST == 7200
+        NRST == 3600
         NSTA == 30
         NFLT == 30
 !       NRST == 8640
@@ -408,7 +406,8 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  38711.5d0                  ! days (end of 2005)
+      DSTART =  29226.5d0                  ! days (early of 1980)
+!     DSTART =  38711.5d0                  ! days (end of 2005)
 !     DSTART =  39446.0d0                  ! days (start of 2008)
   TIDE_START =  -1.0d0                     ! days
     TIME_REF =  19000101.0d0               ! yyyymmdd.dd
@@ -502,6 +501,7 @@ Lstate(isUbar) == F                        ! 2D U-momentum
 Lstate(isVbar) == F                        ! 2D V-momentum
 Lstate(isUvel) == F                        ! 3D U-momentum
 Lstate(isVvel) == F                        ! 3D V-momentum
+Lstate(isWvel) == F                        ! 3D W-momentum
 
 Lstate(isTvar) == F F                      ! NT tracers
 
@@ -722,14 +722,14 @@ Aout2(inert) == F                           ! inert passive tracers
 ! Logical switches (TRUE/FALSE) to activate writing of time-averaged
 ! fields into AVERAGE output file.
 
-Aout(idUvel) == F       ! u                  3D U-velocity
-Aout(idVvel) == F       ! v                  3D V-velocity
+Aout(idUvel) == T       ! u                  3D U-velocity
+Aout(idVvel) == T       ! v                  3D V-velocity
 Aout(idu3dE) == T       ! u_eastward         3D U-eastward  at RHO-points
 Aout(idv3dN) == T       ! v_northward        3D V-northward at RHO-points
 Aout(idWvel) == T       ! w                  3D W-velocity
 Aout(idOvel) == T       ! omega              omega vertical velocity
-Aout(idUbar) == F       ! ubar               2D U-velocity
-Aout(idVbar) == F       ! vbar               2D V-velocity
+Aout(idUbar) == T       ! ubar               2D U-velocity
+Aout(idVbar) == T       ! vbar               2D V-velocity
 Aout(idu2dE) == T       ! ubar_eastward      2D U-eastward  at RHO-points
 Aout(idv2dN) == T       ! vbar_northward     2D V-northward at RHO-points
 Aout(idFsur) == T       ! zeta               free-surface
@@ -776,8 +776,8 @@ Aout(idrain) == T       ! rain               precipitation rate
 
 Aout(idDano) == T       ! rho                density anomaly
 Aout(idVvis) == T       ! AKv                vertical viscosity
-Aout(idTdif) == F       ! AKt                vertical T-diffusion
-Aout(idSdif) == F       ! AKs                vertical Salinity diffusion
+Aout(idTdif) == T       ! AKt                vertical T-diffusion
+Aout(idSdif) == T       ! AKs                vertical Salinity diffusion
 Aout(idHsbl) == T       ! Hsbl               depth of surface boundary layer
 Aout(idHbbl) == F       ! Hbbl               depth of bottom boundary layer
 
@@ -875,9 +875,9 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /center1/w/kshedstrom/NGOA/Files/NWGOA_grid_3.nc
-     ININAME == /center1/w/kshedstrom/NGOA/Files/NGOA_soda_2005_12_27_ic_GFDL.nc
-!    ININAME == ngoa_foo.nc
+     GRDNAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NWGOA_grid_3.nc
+!    ININAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_soda_1980_01_08_ic_GFDL.nc
+     ININAME == ngoa_foo.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
      IADNAME == ocean_iad.nc
@@ -897,14 +897,15 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! except the last one.
 
    NCLMFILES == 2                         ! number of climate files
-     CLMNAME == /center1/w/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_clm_2005.nc |
-                /center1/w/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_clm_2006.nc \
-                /center1/w/kshedstrom/NGOA/Files/NWGOA3_clim_bio_GFDL+WOA+GLODAP.nc
+     CLMNAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_clm_2007.nc |
+                /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_clm_2008.nc |
+                /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_clm_2009.nc \
+                /import/c1/AKWATERS/kshedstrom/NGOA/Files/NWGOA3_clim_bio_GFDL+WOA+GLODAP_nmd.nc
 
     NBCFILES == 2                          ! number of boundary files
-     BRYNAME == /center1/w/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_bdry_2005.nc |
-                /center1/w/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_bdry_2006.nc \
-                /center1/w/kshedstrom/NGOA/Files/NWGOA3_bdry_bio_GFDL+WOA+GLODAP.nc
+     BRYNAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_bdry_2008.nc |
+                /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_SODA3.3.1_bdry_2009.nc \
+                /import/c1/AKWATERS/kshedstrom/NGOA/Files/NWGOA3_bdry_bio_GFDL+WOA+GLODAP_nmd.nc
 
 ! Input climatology nudging coefficients file name.
 
@@ -912,12 +913,12 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     SSFNAME == /center1/w/kshedstrom/NGOA/Files/NGOA_rivers_1980_2014_fe30.nc
-!    SSFNAME == /center1/w/kshedstrom/NGOA/Files/NGOA_COBALT_rivers2.nc
+     NSSFFILES == 1
+     SSFNAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NGOA_rivers_1980_2014_fe10_nmd.nc
 
 ! Input tidal forcing file name.
 
-    TIDENAME == /center1/w/kshedstrom/NGOA/Files/NWGOA3_tides_otps.nc
+    TIDENAME == /import/c1/AKWATERS/kshedstrom/NGOA/Files/NWGOA3_tides_otps.nc
 
 ! Input forcing NetCDF file name(s).
 !
@@ -939,29 +940,30 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
     NFFILES == 13                          ! number of forcing files
 
-    FRCNAME == /center1/d/kate/JRA55-do/slp.2005.30Jun2016.nc   |
-               /center1/d/kate/JRA55-do/slp.2006.30Jun2016.nc   \
-              /center1/d/kate/JRA55-do/q_10.2005.30Jun2016.nc   |
-              /center1/d/kate/JRA55-do/q_10.2006.30Jun2016.nc   \
-              /center1/d/kate/JRA55-do/t_10.2005.30Jun2016.nc   |
-              /center1/d/kate/JRA55-do/t_10.2006.30Jun2016.nc   \
-              /center1/d/kate/JRA55-do/rain.2005.15Dec2016.nc   |
-              /center1/d/kate/JRA55-do/rain.2006.15Dec2016.nc   \
-              /center1/d/kate/JRA55-do/rsds.2005.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/rsds.2006.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/u_10.2005.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/u_10.2006.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/v_10.2005.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/v_10.2006.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/rlds.2005.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/rlds.2006.30Jun2016.nc  \
-              /center1/w/kshedstrom/CORE2/sss_fill_2004.nc \
-              /center1/w/kshedstrom/NGOA/Files/iron_sediment_NWGOA3.nc \
-              /center1/w/kshedstrom/NGOA/Files/Mineral_Fe_Flux_PI_ROMS.nc \
-              /center1/w/kshedstrom/NGOA/Files/Soluble_Fe_Flux_PI_ROMS.nc \
-              /center1/w/kshedstrom/NGOA/Files/composite_CO2_MLO+GLO.nc
+    FRCNAME == /import/c1/AKWATERS/kate/JRA55-do/slp.2008.18Aug2017.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/slp.2009.18Aug2017.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/q_10.2008.30Jun2016.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/q_10.2009.30Jun2016.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/t_10.2008.30Jun2016.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/t_10.2009.30Jun2016.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/rain.2008.15Dec2016.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/rain.2009.15Dec2016.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/rsds.2008.30Jun2016.nc  |
+              /import/c1/AKWATERS/kate/JRA55-do/rsds.2009.30Jun2016.nc  \
+              /import/c1/AKWATERS/kate/JRA55-do/u_10.2008.30Jun2016.nc  |
+              /import/c1/AKWATERS/kate/JRA55-do/u_10.2009.30Jun2016.nc  \
+              /import/c1/AKWATERS/kate/JRA55-do/v_10.2008.30Jun2016.nc  |
+              /import/c1/AKWATERS/kate/JRA55-do/v_10.2009.30Jun2016.nc  \
+              /import/c1/AKWATERS/kate/JRA55-do/rlds.2008.30Jun2016.nc  |
+              /import/c1/AKWATERS/kate/JRA55-do/rlds.2009.30Jun2016.nc  \
+              /import/c1/AKWATERS/kshedstrom/CORE2/sss_fill_2004.nc \
+              /import/c1/AKWATERS/kshedstrom/NGOA/Files/iron_sediment_NWGOA3.nc \
+              /import/c1/AKWATERS/kshedstrom/NGOA/Files/Mineral_Fe_Flux_PI_ROMS.nc \
+              /import/c1/AKWATERS/kshedstrom/NGOA/Files/Soluble_fe_NGOA_clim.nc \
+              /import/c1/AKWATERS/kshedstrom/NGOA/Files/composite_CO2_MLO+GLO.nc
 
-!              /center1/w/kshedstrom/NGOA/Files/runoff_NWGOA3_daitren_clim.nc
+! /import/c1/AKWATERS/kshedstrom/NGOA/Files/Soluble_fe_NGOA_1982-2014.nc
+!              /import/c1/AKWATERS/kshedstrom/NGOA/Files/runoff_NWGOA3_daitren_clim.nc
 ! Output NetCDF file names, [1:Ngrids].
 
      DAINAME == ocean_dai.nc
@@ -982,10 +984,10 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Input ASCII parameter filenames.
 
      APARNAM =  External/assimilation.in
-     SPOSNAM =  /center1/w/kshedstrom/NGOA/External/stations_ngoa.in
-     FPOSNAM =  /center1/w/kshedstrom/NGOA/External/floats_nwgoa.in
-     IPARNAM =  /center1/w/kshedstrom/NGOA/External/ice.in
-     BPARNAM =  /center1/w/kshedstrom/NGOA/External/bio_Cobalt.in.full.NO_CoastDiat_NVO
+     SPOSNAM =  /import/c1/AKWATERS/kshedstrom/NGOA/External/stations_ngoa.in
+     FPOSNAM =  /import/c1/AKWATERS/kshedstrom/NGOA/External/floats_nwgoa.in
+     IPARNAM =  /import/c1/AKWATERS/kshedstrom/NGOA/External/ice.in
+     BPARNAM =  /import/c1/AKWATERS/kshedstrom/NGOA/External/bio_Cobalt.in.full.CoastalDiat_NVO.afterFLO
      SPARNAM =  External/sediment.in
      USRNAME =  External/MyFile.dat
 
@@ -1338,7 +1340,6 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! LcycleRST    Logical switch (T/F) used to recycle time records in output
 !                restart file.  If TRUE,  only the latest two re-start time
 !                records are maintained.  If FALSE, all re-start fields are
-!                saved every NRST time-steps without recycling.  The re-start
 !                saved every NRST timesteps without recycling.  The restart
 !                fields are written at all levels in double precision.
 !
@@ -1873,7 +1874,19 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                      0 <  theta_s <= 10.0
 !                      0 <= theta_b <=  4.0
 !
-!              Many other stretching functions (Vstretching>4) are possible
+!                 (5) Souza et al. (2015) quadratic Legendre polynomial function
+!                     that allows higher resolution near the surface,
+!                     Vstretching=5. It is similar to Vstretching=4, but the
+!                     fractional stretched vertical coordinate (s) is re-defined
+!                     as:
+!
+!                       s(k)=- [(k*k - 2*k*N + k + N*N - N) / (N*N - N)]
+!                            - weight * [(k*k - k*N) / (1 - N)]
+!
+!                     at vertical W-points, k=0,...,N and weight=0.01. To get
+!                     the equation at vertical RHO-points, replace k with k-0.5.
+!
+!              Many other stretching functions (Vstretching>5) are possible
 !              provided that:
 !
 !                * C(s) is a dimensionless, nonlinear, monotonic function.
@@ -1925,8 +1938,9 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                a Calendar linear coordinate, like modified Julian Day.  For
 !                Example:
 !
-!                         Julian Day = 1  for  Nov 25, 0:0:0 4713 BCE
-!                modified Julian Day = 1  for  May 24, 0:0:0 1968  CE GMT
+!                         Julian Day    = 1      for  Nov 25, 00:00:00 4713 BCE
+!                modified Julian Day    = 1      for  May 24, 00:00:00 1968 GMT
+!                Days since Jan 1, 2000 = 988.5  for  Sep 15, 12:00:00 2002
 !
 !                It is called truncated or modified Julian day because an
 !                offset of 2440000 needs to be added.
@@ -1945,24 +1959,24 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                If TIME_REF = -2, model time and DSTART are in modified Julian
 !                days units.  The "units" attribute is:
 !
-!                      'time-units since 1968-05-23 00:00:00 GMT'
+!                  'time-units since 1968-05-23 00:00:00 GMT'    (May 23, 1968)
 !
 !                If TIME_REF = -1, model time and DSTART are in a calendar
 !                with 360 days in every year (30 days each month).  The "units"
 !                attribute is:
 !
-!                      'time-units since 0001-01-01 00:00:00'
+!                  'time-units since 0000-12-30 00:00:00'        (Dec 30, 0000)
 !
 !                If TIME_REF = 0, model time and DSTART are in a common year
 !                calendar with 365.25 days.  The "units" attribute is:
 !
-!                      'time-units since 0001-01-01 00:00:00'
+!                  'time-units since 0001-01-01 00:00:00'        (Jan  1, 0001)
 !
 !                If TIME_REF > 0, model time and DSTART are the elapsed time
 !                units since specified reference time.  For example,
 !                TIME_REF=20020115.5 will yield the following attribute:
 !
-!                      'time-units since 2002-01-15 12:00:00'
+!                  'time-units since 2002-01-15 12:00:00'        (Jan 15, 2002)
 !
 !------------------------------------------------------------------------------
 ! Nudging/relaxation time scales, inverse scales will be computed internally.
@@ -2242,6 +2256,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                Lstate(isVbar):   2D V-momentum
 !                Lstate(isUvel):   3D U-momentum
 !                Lstate(isVvel):   3D V-momentum
+!                Lstate(isWvel):   3D W-momentum
 !                Lstate(isTvar):   Traces (NT values expected)
 !
 !------------------------------------------------------------------------------

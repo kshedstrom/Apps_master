@@ -32,6 +32,7 @@
 #undef FLOATS
 #define STATIONS
 #define WET_DRY
+#define IMPLICIT_NUDGING
 
 #undef T_PASSIVE
 #ifdef T_PASSIVE

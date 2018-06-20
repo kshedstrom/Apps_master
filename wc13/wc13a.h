@@ -30,6 +30,7 @@
 #define MASKING
 #define SOLVE3D
 #define SPLINES
+#define IMPLICIT_NUDGING
 
 #define UV_QDRAG
 #define BULK_FLUXES

@@ -28,6 +28,7 @@
 
 #define SPONGE
 #define ANA_NUDGCOEF
+#define IMPLICIT_NUDGING
 
 #define BULK_FLUXES
 #ifdef BULK_FLUXES

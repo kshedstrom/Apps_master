@@ -407,6 +407,7 @@ Lstate(isUbar) == F                        ! 2D U-momentum
 Lstate(isVbar) == F                        ! 2D V-momentum
 Lstate(isUvel) == F                        ! 3D U-momentum
 Lstate(isVvel) == F                        ! 3D V-momentum
+Lstate(isWvel) == F                        ! 3D W-momentum
 
 ! Logical switches (TRUE/FALSE) to specify the adjoint state tracer
 ! variables whose sensitivity is required (NT values are expected).
@@ -814,7 +815,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !  =========
 !
 !------------------------------------------------------------------------------
-! Application tile (string with a maximum of eighty characters) and 
+! Application tile (string with a maximum of eighty characters) and
 ! C-preprocessing flag.
 !------------------------------------------------------------------------------
 !
@@ -848,17 +849,17 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 ! WARNING: It is trivial and possible to change these dimension parameters in
 ! -------  idealized applications via analytical expressions.  However, in
 ! realistic applications any change to these parameters requires redoing all
-! input NetCDF files. 
+! input NetCDF files.
 !
 !  Lm          Number of INTERIOR grid RHO-points in the XI-direction for
 !                each nested grid, [1:Ngrids]. If using NetCDF files as
-!                input, Lm=xi_rho-2 where "xi_rho" is the NetCDF file 
+!                input, Lm=xi_rho-2 where "xi_rho" is the NetCDF file
 !                dimension of RHO-points. Recall that all RHO-point
 !                variables have a computational I-range of [0:Lm+1].
 !
 !  Mm          Number of INTERIOR grid RHO-points in the ETA-direction for
 !                each nested grid, [1:Ngrids]. If using NetCDF files as
-!                input, Mm=eta_rho-2 where "eta_rho" is the NetCDF file 
+!                input, Mm=eta_rho-2 where "eta_rho" is the NetCDF file
 !                dimension of RHO-points. Recall that all RHO-point
 !                variables have a computational J-range of [0:Mm+1].
 !
@@ -880,7 +881,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !                     |                   |              |_______|
 !                   0 |___________________|              |       |
 !                              Ir                        |       | 1
-!                     0  1            Lm  Lm+1    h(i,j) |_______| 
+!                     0  1            Lm  Lm+1    h(i,j) |_______|
 !                                                        ::::::::: 0
 !                                                        :::::::::
 !                                                        ::::::::: Nbed-1
@@ -1365,7 +1366,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !
 !  CHARNOK_ALPHA   Charnok surface roughness,
 !                    Zos:   (charnok_alpha * u_star**2) / g
-!   
+!
 !  ZOS_HSIG_ALPHA  Roughness from wave amplitude,
 !                    Zos:   zos_hsig_alpha * Hsig
 !
@@ -1492,7 +1493,35 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !
 !                      Cweight=0.5*(1-TANH(Hscale*(s+0.5))
 !
-!              Many other stretching functions (Vstretching>3) are possible
+!                (4) A. Shchepetkin (2010) improved double stretching function,
+!                    Vstretching=4
+!
+!                      C(s)=[1-COSH(theta_s*s)]/[COSH(theta_s)-1]
+!
+!                    with bottom refinement
+!
+!                      C(s)=[EXP(theta_b*C(s))-1]/[1-EXP(-theta_b)]
+!
+!                    The resulting double transformation is continuous with
+!                    respect control parameters theta_s and theta_b with a
+!                    meaningful range of:
+!
+!                      0 <  theta_s <= 10.0
+!                      0 <= theta_b <=  4.0
+!
+!                 (5) Souza et al. (2015) quadratic Legendre polynomial function
+!                     that allows higher resolution near the surface,
+!                     Vstretching=5. It is similar to Vstretching=4, but the
+!                     fractional stretched vertical coordinate (s) is re-defined
+!                     as:
+!
+!                       s(k)=- [(k*k - 2*k*N + k + N*N - N) / (N*N - N)]
+!                            - weight * [(k*k - k*N) / (1 - N)]
+!
+!                     at vertical W-points, k=0,...,N and weight=0.01. To get
+!                     the equation at vertical RHO-points, replace k with k-0.5.
+!
+!              Many other stretching functions (Vstretching>5) are possible
 !              provided that:
 !
 !                * C(s) is a dimensionless, nonlinear, monotonic function.
@@ -1506,7 +1535,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !                  free-surface and C(-1)=-1 corresponding to the bathymetry.
 !
 !              These functions are coded in routine "Utility/set_scoord.F".
-!               
+!
 !  THETA_S     S-coordinate surface control parameter. The range of optimal
 !              values depends on the vertical stretching function, C(s).
 !
@@ -1609,7 +1638,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !              rho(:,:,:) = R0 - R0 * TCOEF * (t(:,:,:,:,itemp) - T0)
 !                              + R0 * SCOEF * (t(:,:,:,:,isalt) - S0)
 !
-!              Typical values:     R0 = 1027.0  kg/m3               
+!              Typical values:     R0 = 1027.0  kg/m3
 !                                  T0 = 10.0    Celsius
 !                                  S0 = 35.0    PSU
 !                               TCOEF = 1.7d-4  1/Celsius
@@ -1732,6 +1761,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !                Lstate(isVbar):   2D V-momentum
 !                Lstate(isUvel):   3D U-momentum
 !                Lstate(isVvel):   3D V-momentum
+!                Lstate(isWvel):   3D W-momentum
 !                Lstate(isTvar):   Traces (NT values expected)
 !
 !------------------------------------------------------------------------------
@@ -1980,7 +2010,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !
 !                INT(user(1)):  tangent state variable to perturb
 !                INT(user(2)):  adjoint state variable to perturb
-!                               [isFsur=1] free-surface 
+!                               [isFsur=1] free-surface
 !                               [isUbar=2] 2D U-momentum
 !                               [isVbar=3] 2D V-momentum
 !                               [isUvel=4] 3D U-momentum

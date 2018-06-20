@@ -67,6 +67,7 @@
       USE mod_grid
       USE mod_ncparam
       USE mod_scalars
+      USE mod_biology
 #ifdef DISTRIBUTE
 !
       USE distribute_mod, ONLY : mp_collect
@@ -94,6 +95,7 @@
       real(r8), parameter :: IniVal = 0.0_r8
 
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
+      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk2
 
 #include "set_bounds.h"
 !
@@ -106,11 +108,12 @@
       DO j=JstrT,JendT
         DO i=IstrT,IendT
           wrk(i,j)=0.0_r8
+          wrk2(i,j)=0.0_r8
         END DO
       END DO
 
 !
-!  Set nudging boundaries coefficients zone for NEP 
+!  Set nudging boundaries coefficients zone for NEP
 !  nudging coefficients vary from a thirty
 !  days time scale at the boundary point to decrease linearly to 0 days
 !  (i.e no nudging) 15 grids points away from the boundary.
@@ -123,6 +126,7 @@
       DO j=JstrT,MIN(INT(cff3),JendT)               ! SOUTH boundary
         DO i=IstrT,IendT
           wrk(i,j)=cff2+(cff3-REAL(j,r8))*(cff1-cff2)/cff3
+          wrk2(i,j)=cff2+(cff3-REAL(j,r8))*(cff1-cff2)/cff3
         END DO
       END DO
 ! cff3-point wide linearly tapered nudging zone
@@ -130,16 +134,24 @@
         DO j=JstrT,JendT
           wrk(i,j)=MAX(wrk(i,j),                                        &
      &             cff2+(cff3-REAL(i,r8))*(cff1-cff2)/cff3)
+          wrk2(i,j)=MAX(wrk2(i,j),                                      &
+     &             cff2+(cff3-REAL(i,r8))*(cff1-cff2)/cff3)
         END DO
       END DO
-! cff3-point wide linearly tapered nudging zone
-!      DO i=MAX(IstrT,Lm(ng)+1-INT(cff3)),IendT       ! EAST boundary
-!        DO j=MAX(400,JstrT),JendT
-!          wrk(i,j)=MAX(wrk(i,j),                                        &
-!     &             cff1+REAL(Lm(ng)+1-i,r8)*(cff2-cff1)/cff3)
-!        END DO
-!      END DO
-!
+! cff3-point wide uniform nudging zone
+      DO i=MAX(IstrT,Lm(ng)+1-INT(cff3)),IendT       ! EAST boundary
+        DO j=JstrT,MIN(111,JendT)
+          wrk2(i,j)=MAX(wrk2(i,j), cff1)
+        END DO
+      END DO
+! Linear ramp
+      DO i=MAX(IstrT,291),MIN(IendT,Lm(ng)+1-INT(cff3))       ! EAST boundary
+        DO j=JstrT,MIN(111,JendT)
+          wrk2(i,j)=MAX(wrk2(i,j),                                        &
+     &             cff1+REAL(Lm(ng)+1-20-i,r8)*(cff2-cff1)/14)
+        END DO
+      END DO
+
 ! Set the relevant nudging coefficients using the entries in wrk
 !
       IF (ANY(LnudgeTCLM(:,ng))) THEN
@@ -152,6 +164,15 @@
             END DO
           END DO
         END DO
+#ifdef BIO_COBALT
+        DO k=1,N(ng)
+          DO j=JstrT,JendT
+            DO i=IstrT,IendT
+              CLIMA(ng)%Tnudgcof(i,j,k,ino3)=wrk2(i,j)
+            END DO
+          END DO
+        END DO
+#endif
       END IF
       IF (LnudgeM2CLM(ng)) THEN
         DO j=JstrT,JendT

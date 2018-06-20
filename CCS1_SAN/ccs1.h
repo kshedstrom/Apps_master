@@ -10,7 +10,7 @@
 **
 **  Options for Northeast Pacific (NEP4) simulation
 */
- 
+
 /* general */
 
 #define CURVGRID
@@ -21,7 +21,7 @@
 #undef CCSM_COUPLED
 #define CORE_FORCING
 #define CCSM_FLUXES
- 
+
 #ifdef SOLVE3D
 # define SPLINES_VDIFF
 # define SPLINES_VVISC
@@ -30,6 +30,7 @@
 #undef FLOATS
 #undef STATIONS
 #undef WET_DRY
+#define IMPLICIT_NUDGING
 
 /* ice */
 
@@ -54,7 +55,7 @@
 #endif
 
 /* output stuff */
- 
+
 #define NO_WRITE_GRID
 #undef OUT_DOUBLE
 #define RST_SINGLE
@@ -63,22 +64,22 @@
 # undef DIAGNOSTICS_TS
 #endif
 #undef DIAGNOSTICS_UV
- 
+
 /* advection, dissipation, pressure grad, etc. */
- 
+
 #ifdef SOLVE3D
 # define DJ_GRADPS
 #endif
- 
+
 #define UV_ADV
 #define UV_COR
 #undef UV_SADVECTION
- 
+
 #ifdef SOLVE3D
 # define TS_U3HADVECTION
 # define TS_SVADVECTION
 #endif
- 
+
 #define UV_VIS2
 #define MIX_S_UV
 #define VISC_GRID
@@ -89,15 +90,15 @@
 # define MIX_GEO_TS
 # define DIFF_GRID
 #endif
- 
+
 /*#define UV_QDRAG */
 #define LIMIT_BSTRESS
- 
+
 /* vertical mixing */
- 
+
 #ifdef SOLVE3D
 # define SOLAR_SOURCE
- 
+
 # define LMD_MIXING
 # ifdef LMD_MIXING
 #  define LMD_RIMIX
@@ -108,13 +109,13 @@
 #  undef LMD_DDMIX
 #  undef LMD_BKPP
 # endif
- 
+
 # undef GLS_MIXING
 # undef MY25_MIXING
 #endif
- 
+
 /* surface forcing */
- 
+
 #ifdef SOLVE3D
 # define BULK_FLUXES
 # ifdef BULK_FLUXES
@@ -127,9 +128,9 @@
 #  undef LONGWAVE
 # endif
 #endif
- 
+
 /* surface and side corrections */
- 
+
 #ifdef SOLVE3D
 # undef SCORRECTION
 # undef SRELAXATION /* to do later : correct in set_vbc.F  */
@@ -140,16 +141,16 @@
 # undef ANA_TCLIMA
 # define ANA_NUDGCOEF
 #endif
- 
+
 /* point sources (rivers, line sources) */
- 
+
 #ifdef SOLVE3D
 # undef UV_PSOURCE
 # undef TS_PSOURCE
 #endif
- 
+
 /* tides */
- 
+
 #undef LTIDES /* RD test */
 #ifdef LTIDES
 # define FILTERED
@@ -165,19 +166,19 @@
 # define ANA_DRAG
 # define LIMIT_BSTRESS
 # undef UV_QDRAG */
-# define UV_QDRAG 
-#else 
 # define UV_QDRAG
-/* drag could be also something to tweak */ 
+#else
+# define UV_QDRAG
+/* drag could be also something to tweak */
 #endif
 
- 
+
 /* Boundary conditions...careful with grid orientation */
- 
+
 #define RADIATION_2D
- 
+
 /* roms quirks */
- 
+
 #ifdef SOLVE3D
 # define ANA_BSFLUX
 # define ANA_BTFLUX
@@ -202,7 +203,7 @@
 # undef  IRON_RELAX
 # undef  IRON_RSIN
 # undef  ANA_BIOLOGY
-# define ANA_SPFLUX 
+# define ANA_SPFLUX
 # define ANA_BPFLUX
 # undef  ANA_SRFLUX
 # undef  DIAGNOSTICS_BIO

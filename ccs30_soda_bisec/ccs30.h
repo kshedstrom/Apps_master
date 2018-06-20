@@ -3,6 +3,7 @@
 #define MASKING
 #define SOLVE3D
 #define SPLINES
+#define IMPLICIT_NUDGING
 
 #undef  FLOATS
 #undef OFFLINE_FLOATS
