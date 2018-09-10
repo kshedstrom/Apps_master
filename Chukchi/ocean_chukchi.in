@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /center1/w/kshedstrom/NGOA/External/varinfo.dat.cobalt
+     VARNAME = /import/c1/AKWATERS/kshedstrom/NGOA/External/varinfo.dat.cobalt
 
 ! Number of nested grids.
 
@@ -201,8 +201,8 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-       NTIMES == 118800
-!      NTIMES == 259200
+!      NTIMES == 118800
+       NTIMES == 259200
           DT == 240.0d0
 !         DT == 200.0d0
      NDTFAST == 10
@@ -517,7 +517,6 @@ Lstate(isUbar) == F                        ! 2D U-momentum
 Lstate(isVbar) == F                        ! 2D V-momentum
 Lstate(isUvel) == F                        ! 3D U-momentum
 Lstate(isVvel) == F                        ! 3D V-momentum
-Lstate(isWvel) == F                        ! 3D W-momentum
 
 Lstate(isTvar) == F F                      ! NT tracers
 
@@ -955,9 +954,9 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /center1/w/kshedstrom/Chukchi/Files/grid_Chukchi_3.nc
-!    ININAME == /center1/w/kshedstrom/Chukchi/Files/Chukchi3_ic_2009-12-26.nc
-     ININAME == chukchi_foo.nc
+     GRDNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/grid_Chukchi_3.nc
+     ININAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ic_2009-12-26.nc
+!    ININAME == chukchi_foo.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
      IADNAME == ocean_iad.nc
@@ -977,16 +976,19 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! except the last one.
 
    NCLMFILES == 2                         ! number of climate files
-     CLMNAME == /center1/w/kshedstrom/Chukchi/Files/Chukchi3_clm_2012.nc |
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_clm_2013.nc \
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_clim_bio.nc
+     CLMNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2009.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2010.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2011.nc \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clim_bio.nc
 
     NBCFILES == 3                          ! number of boundary files
-     BRYNAME == /center1/w/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2012.nc |
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2013.nc \
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2012.nc |
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2013.nc \
-                /center1/w/kshedstrom/Chukchi/Files/Chukchi3_bdry_bio_clima.nc
+     BRYNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2009.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2010.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2011.nc \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2009.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2010.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2011.nc \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_bdry_bio_clima.nc
 
 ! Input climatology nudging coefficients file name.
 
@@ -994,12 +996,12 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     NSSFFILES == 1
-     SSFNAME == /center1/w/kshedstrom/Chukchi/Files/NWGOA3_rivers.nc
+    NSSFFILES == 1                          ! number of boundary files
+     SSFNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/NWGOA3_rivers.nc
 
 ! Input tidal forcing file name.
 
-    TIDENAME == /center1/w/kshedstrom/Chukchi/Files/Chukchi3_tides_otps.nc
+    TIDENAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_tides_otps.nc
 
 ! Input forcing NetCDF file name(s).
 !
@@ -1021,31 +1023,39 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
     NFFILES == 15                          ! number of unique forcing files
 
-    FRCNAME == /center1/d/kate/JRA55-do/slp.2012.18Aug2017.nc   |
-               /center1/d/kate/JRA55-do/slp.2013.18Aug2017.nc   \
-              /center1/d/kate/JRA55-do/q_10.2012.30Jun2016.nc   |
-              /center1/d/kate/JRA55-do/q_10.2013.30Jun2016.nc   \
-              /center1/d/kate/JRA55-do/t_10.2012.30Jun2016.nc   |
-              /center1/d/kate/JRA55-do/t_10.2013.30Jun2016.nc   \
-              /center1/d/kate/JRA55-do/rain.2012.15Dec2016.nc   |
-              /center1/d/kate/JRA55-do/rain.2013.15Dec2016.nc   \
-              /center1/d/kate/JRA55-do/snow.2012.15Dec2016.nc   |
-              /center1/d/kate/JRA55-do/snow.2013.15Dec2016.nc   \
-              /center1/d/kate/JRA55-do/rsds.2012.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/rsds.2013.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/u_10.2012.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/u_10.2013.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/v_10.2012.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/v_10.2013.30Jun2016.nc  \
-              /center1/d/kate/JRA55-do/rlds.2012.30Jun2016.nc  |
-              /center1/d/kate/JRA55-do/rlds.2013.30Jun2016.nc  \
-        /center1/d/kate/JRA55-do/runoff_all.2012.15Dec2016.nc |
-        /center1/d/kate/JRA55-do/runoff_all.2013.15Dec2016.nc \
-              /center1/w/kshedstrom/CORE2/sss_fill_2004.nc \
-              /center1/w/kshedstrom/Chukchi/Files/iron_sediment_CHUKCHI3.nc \
-              /center1/w/kshedstrom/NGOA/Files/Mineral_Fe_Flux_PI_ROMS.nc \
-              /center1/w/kshedstrom/NGOA/Files/Soluble_Fe_Flux_PI_ROMS.nc \
-              /center1/w/kshedstrom/NGOA/Files/composite_CO2_MLO+GLO.nc
+    FRCNAME == /center1/AKWATERS/kate/JRA55-do/slp.2009.18Aug2017.nc   |
+    FRCNAME == /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2009.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2010.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2011.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2009.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2010.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2011.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2009.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2010.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2011.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2009.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2010.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2011.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2009.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2010.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2011.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2009.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2010.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2011.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2009.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2010.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2011.nc   \
+         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2009.nc   |
+         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2010.nc   |
+         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2011.nc   \
+                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2009.15Dec2016.nc |
+                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2010.15Dec2016.nc |
+                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2011.15Dec2016.nc \
+              /center1/AKWATERS/kshedstrom/CORE2/sss_fill_2004.nc \
+              /center1/AKWATERS/kshedstrom/Chukchi/Files/iron_sediment_CHUKCHI3.nc \
+              /center1/AKWATERS/kshedstrom/NGOA/Files/Mineral_Fe_Flux_PI_ROMS.nc \
+              /center1/AKWATERS/kshedstrom/NGOA/Files/Soluble_Fe_Flux_PI_ROMS.nc \
+              /center1/AKWATERS/kshedstrom/NGOA/Files/composite_CO2_MLO+GLO.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 
@@ -1067,10 +1077,10 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Input ASCII parameter filenames.
 
      APARNAM =  External/assimilation.in
-     SPOSNAM =  /center1/w/kshedstrom/Chukchi/External/stations_chukchi.in
-     FPOSNAM =  /center1/w/kshedstrom/Chukchi/External/floats_chukchi.in
-     IPARNAM =  /center1/w/kshedstrom/Chukchi/External/ice.in
-     BPARNAM =  /center1/w/kshedstrom/Chukchi/External/bio_Cobalt.in.full.NO_CoastDiat_NVO
+     SPOSNAM =  /center1/AKWATERS/kshedstrom/Chukchi/External/stations_chukchi.in
+     FPOSNAM =  /center1/AKWATERS/kshedstrom/Chukchi/External/floats_chukchi.in
+     IPARNAM =  /center1/AKWATERS/kshedstrom/Chukchi/External/ice.in
+     BPARNAM =  /center1/AKWATERS/kshedstrom/Chukchi/External/bio_Cobalt.in.full.CoastalDiat_NVO.afterFLO
      SPARNAM =  External/sediment.in
      USRNAME =  External/MyFile.dat
 
@@ -1967,19 +1977,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                      0 <  theta_s <= 10.0
 !                      0 <= theta_b <=  4.0
 !
-!                 (5) Souza et al. (2015) quadratic Legendre polynomial function
-!                     that allows higher resolution near the surface,
-!                     Vstretching=5. It is similar to Vstretching=4, but the
-!                     fractional stretched vertical coordinate (s) is re-defined
-!                     as:
-!
-!                       s(k)=- [(k*k - 2*k*N + k + N*N - N) / (N*N - N)]
-!                            - weight * [(k*k - k*N) / (1 - N)]
-!
-!                     at vertical W-points, k=0,...,N and weight=0.01. To get
-!                     the equation at vertical RHO-points, replace k with k-0.5.
-!
-!              Many other stretching functions (Vstretching>5) are possible
+!              Many other stretching functions (Vstretching>4) are possible
 !              provided that:
 !
 !                * C(s) is a dimensionless, nonlinear, monotonic function.
@@ -2031,9 +2029,8 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                a Calendar linear coordinate, like modified Julian Day.  For
 !                Example:
 !
-!                         Julian Day    = 1      for  Nov 25, 00:00:00 4713 BCE
-!                modified Julian Day    = 1      for  May 24, 00:00:00 1968 GMT
-!                Days since Jan 1, 2000 = 988.5  for  Sep 15, 12:00:00 2002
+!                         Julian Day = 1  for  Nov 25, 0:0:0 4713 BCE
+!                modified Julian Day = 1  for  May 24, 0:0:0 1968  CE GMT
 !
 !                It is called truncated or modified Julian day because an
 !                offset of 2440000 needs to be added.
@@ -2052,24 +2049,24 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                If TIME_REF = -2, model time and DSTART are in modified Julian
 !                days units.  The "units" attribute is:
 !
-!                  'time-units since 1968-05-23 00:00:00 GMT'    (May 23, 1968)
+!                      'time-units since 1968-05-23 00:00:00 GMT'
 !
 !                If TIME_REF = -1, model time and DSTART are in a calendar
 !                with 360 days in every year (30 days each month).  The "units"
 !                attribute is:
 !
-!                  'time-units since 0000-12-30 00:00:00'        (Dec 30, 0000)
+!                      'time-units since 0001-01-01 00:00:00'
 !
 !                If TIME_REF = 0, model time and DSTART are in a common year
 !                calendar with 365.25 days.  The "units" attribute is:
 !
-!                  'time-units since 0001-01-01 00:00:00'        (Jan  1, 0001)
+!                      'time-units since 0001-01-01 00:00:00'
 !
 !                If TIME_REF > 0, model time and DSTART are the elapsed time
 !                units since specified reference time.  For example,
 !                TIME_REF=20020115.5 will yield the following attribute:
 !
-!                  'time-units since 2002-01-15 12:00:00'        (Jan 15, 2002)
+!                      'time-units since 2002-01-15 12:00:00'
 !
 !------------------------------------------------------------------------------
 ! Nudging/relaxation time scales, inverse scales will be computed internally.
@@ -2349,7 +2346,6 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !                Lstate(isVbar):   2D V-momentum
 !                Lstate(isUvel):   3D U-momentum
 !                Lstate(isVvel):   3D V-momentum
-!                Lstate(isWvel):   3D W-momentum
 !                Lstate(isTvar):   Traces (NT values expected)
 !
 !------------------------------------------------------------------------------

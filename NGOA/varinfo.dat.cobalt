@@ -231,6 +231,15 @@
   'w3dvar'
   1.0d0
 
+'AKt'                                            ! Output
+  'S-coordinate vertical momentum component'
+  'meter3 second-1'                                ! [m3/s]
+  'omega, scalar, series'
+  'ocean_time'
+  'idAclm'
+  'w3dvar'
+  1.0d0
+
 'rho'                                              ! Output
   'density anomaly'
   'kilogram meter-3'                               ! [kg/m3]
@@ -742,8 +751,8 @@
 
 'fastice'                                          ! Input/Output
   'landfast ice extent'
-  '1'                                              ! 
-  'FastIce, scalar, series'                        ! 
+  '1'                                              !
+  'FastIce, scalar, series'                        !
   'ocean_time'                                     !
   'idFastIce'                                      !
   'r2dvar'
@@ -2105,7 +2114,7 @@
 !------------------------------------------------------------------------------
 !
 
-'psl'                                              ! Input
+'Pair'                                             ! Input
   'surface air pressure'
   'Pascal'                                         ! [ROMS wants millibar]
   'Pair, scalar, series'
@@ -2114,7 +2123,7 @@
   'r2dvar'
   0.01d0
 
-'tas_10m'                                          ! Input
+'Tair'                                             ! Input
   'surface air temperature'
   'Celsius'                                        ! [Kelvin]
   'Tair, scalar, series'
@@ -2123,7 +2132,7 @@
   'r2dvar'
   1.0d0
 
-'huss_10m'                                         ! Input
+'Qair'                                             ! Input
   'surface air relative humidity'
   'kg/kg'                                          ! [kg/kg]
   'Qair, scalar, series'
@@ -2141,7 +2150,7 @@
   'r2dvar'
   1.0d0
 
-'rsds'                                             ! Input/Output
+'swrad'                                            ! Input/Output
   'solar shortwave radiation flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
   'shortwave radiation, scalar, series'            ! [Celsius m/s]
@@ -2159,7 +2168,7 @@
   'r2dvar'
   1.0d0
 
-'rlds'                                             ! Input
+'lwrad_down'                                       ! Input
   'downwelling longwave radiation flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
   'downwelling longwave radiation, scalar, series' ! [Celsius m/s]
@@ -2168,7 +2177,7 @@
   'r2dvar'
   1.0d0
 
-'rlds'                                             ! Input/Output
+'lwrad'                                            ! Input/Output
   'net longwave radiation flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
   'longwave radiation, scalar, series'             ! [Celsius m/s]
@@ -2244,7 +2253,7 @@
   'r2dvar'
   1.0d0
 
-'prrn'                                             ! Input
+'rain'                                             ! Input
   'rain fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'rain, scalar, series'
@@ -2253,7 +2262,7 @@
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'prsn'                                             ! Input
+'snow'                                             ! Input
   'snow fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'snow, scalar, series'
@@ -2271,7 +2280,7 @@
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'uas_10m'                                          ! Input
+'Uwind'                                            ! Input
   'surface u-wind component'
   'meter second-1'                                 ! [m/s]
   'u-wind, scalar, series'
@@ -2280,7 +2289,7 @@
   'r2dvar'
   1.0d0
 
-'vas_10m'                                          ! Input
+'Vwind'                                            ! Input
   'surface v-wind component'
   'meter second-1'                                 ! [m/s]
   'v-wind, scalar, series'
@@ -4028,6 +4037,25 @@
   1.0d0
 
 
+'femd'
+  'Medium Phytoplankton Iron'
+  'mol/kg'
+  'femd, scalar, series'
+  'ocean_time'
+  'idTvar(ifemd)'
+  'r3dvar'
+  1.0d0
+
+'river_femd'
+  'river runoff Medium Phytoplankton Iron'
+  'mol/kg'
+  'femd, scalar, series'
+  'ocean_time'
+  'idRtrc(ifemd)'
+  'r3dvar'
+  1.0d0
+
+
 'fesm'
   'Small Phytoplankton Iron'
   'mol/kg'
@@ -4195,6 +4223,25 @@
   'nlg, scalar, series'
   'ocean_time'
   'idRtrc(inlg)'
+  'r3dvar'
+  1.0d0
+
+
+'nmd'
+  'Medium Phytoplankton Nitrogen'
+  'mol/kg'
+  'nmd, scalar, series'
+  'ocean_time'
+  'idTvar(inmd)'
+  'r3dvar'
+  1.0d0
+
+'river_nmd'
+  'river runoff Medium Phytoplankton Nitrogen'
+  'mol/kg'
+  'nmd, scalar, series'
+  'ocean_time'
+  'idRtrc(inmd)'
   'r3dvar'
   1.0d0
 
@@ -4427,6 +4474,25 @@
   1.0d0
 
 
+'simd'
+  'Medium Phytoplankton Silicon'
+  'mol/kg'
+  'simd, scalar, series'
+  'ocean_time'
+  'idTvar(isimd)'
+  'r3dvar'
+  1.0d0
+
+'river_simd'
+  'river runoff Medium Phytoplankton Silicon'
+  'mol/kg'
+  'simd, scalar, series'
+  'ocean_time'
+  'idRtrc(isimd)'
+  'r3dvar'
+  1.0d0
+
+
 'sio4'
   'Silicate'
   'mol/kg'
@@ -4634,72 +4700,72 @@
 
 ! Diagnostic variables for Cobalt
 
-'cased'                                      
+'cased'
   'Sediment CaCO3'
-  'mol.m-3' 
+  'mol.m-3'
   'cased, scalar, series'
   'ocean_time'
   'iDbio2(icased)'
   'r2dvar'
   1.0d0
 
-'cadet_arag_btf'                                      
+'cadet_arag_btf'
   'aragonite flux to Sediments'
-  'mol m-2 s-1' 
+  'mol m-2 s-1'
   'cadet_arag_btf, scalar, series'
   'ocean_time'
   'iDbio2(icadet_arag_btf)'
   'r2dvar'
   1.0d0
 
-'cadet_calc_btf'                                      
+'cadet_calc_btf'
   'calcite flux to Sediments'
-  'mol m-2 s-1' 
+  'mol m-2 s-1'
   'cadet_calc_btf, scalar, series'
   'ocean_time'
   'iDbio2(icadet_calc_btf)'
   'r2dvar'
   1.0d0
 
-'ndet_btf'                                      
+'ndet_btf'
   'N flux to Sediments'
-  'mol m-2 s-1' 
+  'mol m-2 s-1'
   'ndet_btf, scalar, series'
   'ocean_time'
   'iDbio2(indet_btf)'
   'r2dvar'
   1.0d0
 
-'pdet_btf'                                      
+'pdet_btf'
   'P flux to Sediments'
-  'mol m-2 s-1' 
+  'mol m-2 s-1'
   'pdet_btf, scalar, series'
   'ocean_time'
   'iDbio2(ipdet_btf)'
   'r2dvar'
   1.0d0
 
-'sidet_btf'                                      
+'sidet_btf'
   'SiO2 flux to Sediments'
-  'mol m-2 s-1' 
+  'mol m-2 s-1'
   'sidet_btf, scalar, series'
   'ocean_time'
   'iDbio2(isidet_btf)'
   'r2dvar'
   1.0d0
 
-'mxl_depth'                                      
+'mxl_depth'
   'depth of the mixed layer hsbl'
-  'm' 
+  'm'
   'mxl_depth, scalar, series'
   'ocean_time'
   'iDbio2(imxl_depth)'
   'r2dvar'
   1.0d0
 
-'mxl_level'                                      
+'mxl_level'
   'level of the mixed layer hsbl'
-  'm' 
+  'm'
   'mxl_level, scalar, series'
   'ocean_time'
   'iDbio2(imxl_level)'
@@ -4770,7 +4836,7 @@
   1.0d0
 
 'sio4_btf'
-  'Sillicate bottom flux'
+  'Silicate bottom flux'
   'mol m-2 s-1'
   'sio4_btf, scalar, series'
   'ocean_time'
@@ -4793,6 +4859,24 @@
   'jremin_ndet_100, scalar, series'
   'ocean_time'
   'iDbio2(ijremin_ndet_100)'
+  'r2dvar'
+  1.0d0
+
+'no3denit_sed'
+  'sedimentary denitrification'
+  'mgC/m2/day'
+  'no3denit_sed, scalar, series'
+  'ocean_time'
+  'iDbio2(ino3denit_sed)'
+  'r2dvar'
+  1.0d0
+
+'jno3denit_wc_vint'
+  'sedimentary denitrification'
+  'mgC/m2/day'
+  'jno3denit_wc_vint, scalar, series'
+  'ocean_time'
+  'iDbio2(ijno3denit_wc_vint)'
   'r2dvar'
   1.0d0
 
@@ -4874,24 +4958,6 @@
   'prod_n_100_sm, scalar, series'
   'ocean_time'
   'iDbio2(iprod_n_100_sm)'
-  'r2dvar'
-  1.0d0
-
-'no3denit_sed'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'no3denit_sed, scalar, series'
-  'ocean_time'
-  'iDbio2(ino3denit_sed)'
-  'r2dvar'
-  1.0d0
-
-'jno3denit_wc_vint'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'jno3denit_wc_vint, scalar, series'
-  'ocean_time'
-  'iDbio2(ijno3denit_wc_vint)'
   'r2dvar'
   1.0d0
 
@@ -5238,54 +5304,54 @@
   1.0d0
 
 
-'chl'                                      
+'chl'
   'Chlorophyll'
-  'ug kg-1' 
+  'ug kg-1'
   'chl, scalar, series'
   'ocean_time'
   'iDbio3(ichl)'
   'r3dvar'
   1.0d0
 
-'co3_ion'                                      
+'co3_ion'
   'Carbonate ion'
-  'mol/kg' 
+  'mol/kg'
   'co3_ion, scalar, series'
   'ocean_time'
   'iDbio3(ico3_ion)'
   'r3dvar'
   1.0d0
 
-'htotal'                                      
+'htotal'
   'H+ ion concentration'
-  'mol/kg' 
+  'mol/kg'
   'htotal, scalar, series'
   'ocean_time'
   'iDbio3(ihtotal)'
   'r3dvar'
   1.0d0
 
-'irr_mem'                                      
+'irr_mem'
   'Irradiance memory'
-  'Watts/m^2' 
+  'Watts/m^2'
   'irr_mem, scalar, series'
   'ocean_time'
   'iDbio3(iirr_mem)'
   'r3dvar'
   1.0d0
 
-'irr_mix'                                      
+'irr_mix'
   'Irradiance in mixed layer'
-  'Watts/m^2' 
+  'Watts/m^2'
   'irr_mix, scalar, series'
   'ocean_time'
   'iDbio3(iirr_mix)'
   'r3dvar'
   1.0d0
 
-'irr_inst'                                      
+'irr_inst'
   'Irradiance instantaneous'
-  'Watts/m^2' 
+  'Watts/m^2'
   'irr_inst, scalar, series'
   'ocean_time'
   'iDbio3(iirr_inst)'
@@ -5294,7 +5360,7 @@
 
 'jprod_cadet_arag'
   'production term for cadet_arag'
-  'N/A' 
+  'N/A'
   'jprod_cadet_arag, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_cadet_arag)'
@@ -5303,7 +5369,7 @@
 
 'jprod_cadet_calc'
   'production term for cadet_calc'
-  'N/A' 
+  'N/A'
   'jprod_cadet_calc, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_cadet_calc)'
@@ -5312,7 +5378,7 @@
 
 'jprod_fedet'
   'production term for fedet'
-  'N/A' 
+  'N/A'
   'jprod_fedet, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_fedet)'
@@ -5321,7 +5387,7 @@
 
 'jprod_lithdet'
   'production term for lithdet'
-  'N/A' 
+  'N/A'
   'jprod_lithdet, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_lithdet)'
@@ -5330,7 +5396,7 @@
 
 'jprod_ndet'
   'production term for ndet'
-  'N/A' 
+  'N/A'
   'jprod_ndet, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_ndet)'
@@ -5339,7 +5405,7 @@
 
 'jprod_pdet'
   'production term for pdet'
-  'N/A' 
+  'N/A'
   'jprod_pdet, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_pdet)'
@@ -5348,7 +5414,7 @@
 
 'jprod_sidet'
   'production term for sidet'
-  'N/A' 
+  'N/A'
   'jprod_sidet, scalar, series'
   'ocean_time'
   'iDbio3(ijprod_sidet)'
@@ -5456,7 +5522,7 @@
 
 'ndet_b4sink'
   'ndet before sinking is applied'
-  'N/A' 
+  'N/A'
   'ndet_b4sink, scalar, series'
   'ocean_time'
   'iDbio3(indet_b4sink)'
@@ -5465,7 +5531,7 @@
 
 'pdet_b4sink'
   'pdet before sinking is applied'
-  'N/A' 
+  'N/A'
   'pdet_b4sink, scalar, series'
   'ocean_time'
   'iDbio3(ipdet_b4sink)'
@@ -5474,7 +5540,7 @@
 
 'fedet_b4sink'
   'fedet before sinking is applied'
-  'N/A' 
+  'N/A'
   'fedet_b4sink, scalar, series'
   'ocean_time'
   'iDbio3(ifedet_b4sink)'
@@ -6307,6 +6373,43 @@
   1.0d0
 
 
+'femd_east'
+  'Medium Phytoplankton Iron eastern boundary condition'
+  'mol/kg'
+  'femd_east, scalar, series'
+  'ocean_time'
+  'idTbry(ieast,ifemd)'
+  'nulvar'
+  1.0d0
+
+'femd_west'
+  'Medium Phytoplankton Iron western boundary condition'
+  'mol/kg'
+  'femd_west, scalar, series'
+  'ocean_time'
+  'idTbry(iwest,ifemd)'
+  'nulvar'
+  1.0d0
+
+'femd_north'
+  'Medium Phytoplankton Iron northern boundary condition'
+  'mol/kg'
+  'femd_north, scalar, series'
+  'ocean_time'
+  'idTbry(inorth,ifemd)'
+  'nulvar'
+  1.0d0
+
+'femd_south'
+  'Medium Phytoplankton Iron southern boundary condition'
+  'mol/kg'
+  'femd_south, scalar, series'
+  'ocean_time'
+  'idTbry(isouth,ifemd)'
+  'nulvar'
+  1.0d0
+
+
 'fesm_east'
   'Small Phytoplankton Iron eastern boundary condition'
   'mol/kg'
@@ -6636,6 +6739,43 @@
   'nlg_south, scalar, series'
   'ocean_time'
   'idTbry(isouth,inlg)'
+  'nulvar'
+  1.0d0
+
+
+'nmd_east'
+  'Medium Phytoplankton Nitrogen eastern boundary condition'
+  'mol/kg'
+  'nmd_east, scalar, series'
+  'ocean_time'
+  'idTbry(ieast,inmd)'
+  'nulvar'
+  1.0d0
+
+'nmd_west'
+  'Medium Phytoplankton Nitrogen western boundary condition'
+  'mol/kg'
+  'nmd_west, scalar, series'
+  'ocean_time'
+  'idTbry(iwest,inmd)'
+  'nulvar'
+  1.0d0
+
+'nmd_north'
+  'Medium Phytoplankton Nitrogen northern boundary condition'
+  'mol/kg'
+  'nmd_north, scalar, series'
+  'ocean_time'
+  'idTbry(inorth,inmd)'
+  'nulvar'
+  1.0d0
+
+'nmd_south'
+  'Medium Phytoplankton Nitrogen southern boundary condition'
+  'mol/kg'
+  'nmd_south, scalar, series'
+  'ocean_time'
+  'idTbry(isouth,inmd)'
   'nulvar'
   1.0d0
 
@@ -7080,6 +7220,43 @@
   'silg_south, scalar, series'
   'ocean_time'
   'idTbry(isouth,isilg)'
+  'nulvar'
+  1.0d0
+
+
+'simd_east'
+  'Medium Phytoplankton Silicon eastern boundary condition'
+  'mol/kg'
+  'simd_east, scalar, series'
+  'ocean_time'
+  'idTbry(ieast,isimd)'
+  'nulvar'
+  1.0d0
+
+'simd_west'
+  'Medium Phytoplankton Silicon western boundary condition'
+  'mol/kg'
+  'simd_west, scalar, series'
+  'ocean_time'
+  'idTbry(iwest,isimd)'
+  'nulvar'
+  1.0d0
+
+'simd_north'
+  'Medium Phytoplankton Silicon northern boundary condition'
+  'mol/kg'
+  'simd_north, scalar, series'
+  'ocean_time'
+  'idTbry(inorth,isimd)'
+  'nulvar'
+  1.0d0
+
+'simd_south'
+  'Medium Phytoplankton Silicon southern boundary condition'
+  'mol/kg'
+  'simd_south, scalar, series'
+  'ocean_time'
+  'idTbry(isouth,isimd)'
   'nulvar'
   1.0d0
 

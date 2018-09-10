@@ -14,7 +14,7 @@
 
 #define NO_HIS
 #define HDF5
-#undef DEFLATE
+#define DEFLATE
 #define PERFECT_RESTART
 #undef OFFLINE_BIOLOGY
 

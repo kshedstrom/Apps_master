@@ -9,7 +9,7 @@
 **
 *******************************************************************************
 **
-**  Options for NWGOA simulation
+**  Options for Chukchi simulation
 */
 
 #define NO_HIS
@@ -63,9 +63,9 @@
 #  define ICE_SMOLAR
 #  define ICE_UPWIND
 #  define ICE_BULK_FLUXES
+#  define ICE_CONVSNOW
 #  define ICE_I_O
 #  define ICE_DIAGS
-#  define ICE_CONVSNOW
 # endif
 #endif
 
@@ -93,7 +93,6 @@
 #define UV_COR
 
 #ifdef SOLVE3D
-# undef TS_A4HADVECTION
 # define TS_U3HADVECTION
 # define TS_C4VADVECTION
 # undef TS_MPDATA
@@ -104,7 +103,6 @@
 #undef VISC_3DCOEF
 #define MIX_S_UV
 #define VISC_GRID
-#undef SPONGE
 
 #ifdef SOLVE3D
 # undef TS_DIF2
@@ -122,10 +120,12 @@
 #  define LMD_RIMIX
 #  define LMD_CONVEC
 #  define LMD_SKPP
+#  define LI_FOX_KEMPER
 #  undef LMD_BKPP
 #  define LMD_NONLOCAL
 #  define LMD_SHAPIRO
 #  define LMD_DDMIX
+#  define LIMIT_VDIFF
 # endif
 
 # undef GLS_MIXING
@@ -155,12 +155,11 @@
 #  undef ANA_SRFLUX
 #  undef ALBEDO_CLOUD
 #  define ALBEDO_CURVE  /* for water */
-#  undef ICE_ALB_EC92  /* for ice */
+#  undef ICE_ALB_EC92   /* for ice */
 #  define ALBEDO_CSIM   /* for ice */
-#  undef ALBEDO_FILE  /* for both */
+#  undef ALBEDO_FILE    /* for both */
 #  undef LONGWAVE
 # endif
-# define SCORRECTION
 #else
 # define ANA_SMFLUX
 # define ANA_STFLUX
@@ -170,6 +169,7 @@
 /* surface and side corrections */
 
 #ifdef SOLVE3D
+# define SCORRECTION
 # define NO_SCORRECTION_ICE
 #endif
 
@@ -185,7 +185,7 @@
 
 #define LTIDES
 #ifdef LTIDES
-# if defined AVERAGES /* && !defined USE_DEBUG */
+# if defined AVERAGES && !defined USE_DEBUG
 #  define FILTERED
 # endif
 # define SSH_TIDES
@@ -198,11 +198,9 @@
 
 # define UV_DRAG_GRID
 # define ANA_DRAG
-# define LIMIT_BSTRESS
-# define UV_QDRAG
-#else
-# define UV_QDRAG
 #endif
+#define LIMIT_BSTRESS
+#define UV_QDRAG
 
 /* Boundary conditions...careful with grid orientation */
 
@@ -231,15 +229,16 @@
 #if defined BIO_COBALT
 # define OPTIC_MANIZZA
 # define COBALT_MINERALS
-# define COBALT_PHOSPHORUS
+# undef COBALT_PHOSPHORUS
 # define COBALT_IRON
 # define NO_IRON_COAST
 # define COBALT_CARBON
 # define DIAGNOSTICS_BIO
 /*# define BENTHIC  */
 /*# define TIMESERIES */
+# undef ANA_ALK_DIC
 # undef ANA_BIOLOGY        /* analytical biology initial conditions */
 # define ANA_BPFLUX        /* analytical bottom passive tracers fluxes */
 # define ANA_SPFLUX        /* analytical surface passive tracers fluxes */
-# undef COASTDIAT
+# define COASTDIAT
 #endif
