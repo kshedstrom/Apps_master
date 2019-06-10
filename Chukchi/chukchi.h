@@ -1,7 +1,7 @@
 /*
 ** svn $Id$
 *******************************************************************************
-** Copyright (c) 2002-2017 The ROMS/TOMS Group
+** Copyright (c) 2002-2019 The ROMS/TOMS Group
 **
 **   Licensed under a MIT/X style license
 **
@@ -25,8 +25,8 @@
 #define SOLVE3D
 #define SALINITY
 #ifdef SOLVE3D
-# define SPLINES_VDIFF
-# define SPLINES_VVISC
+# undef SPLINES_VDIFF
+# undef SPLINES_VVISC
 # define RI_SPLINES
 #endif
 #undef FLOATS
@@ -53,6 +53,7 @@
 #  undef  OUTFLOW_MASK
 #  define SNOWFALL
 #  define ICE_LANDFAST
+#  define ICE_SHALLOW_LIMIT
 #  define ICE_THERMO
 #  define ICE_MK
 #  define ICE_MOMENTUM
@@ -66,6 +67,7 @@
 #  define ICE_CONVSNOW
 #  define ICE_I_O
 #  define ICE_DIAGS
+#  define CCSM_ICE_SHORTWAVE
 # endif
 #endif
 
@@ -93,9 +95,9 @@
 #define UV_COR
 
 #ifdef SOLVE3D
-# define TS_U3HADVECTION
-# define TS_C4VADVECTION
-# undef TS_MPDATA
+# undef TS_U3HADVECTION
+# undef TS_C4VADVECTION
+# define TS_MPDATA
 #endif
 
 #define UV_VIS2
@@ -152,7 +154,6 @@
 #  undef DIURNAL_SRFLUX
 #  define SOLAR_SOURCE
 #  define EMINUSP
-#  undef ANA_SRFLUX
 #  undef ALBEDO_CLOUD
 #  define ALBEDO_CURVE  /* for water */
 #  undef ICE_ALB_EC92   /* for ice */
@@ -173,11 +174,16 @@
 # define NO_SCORRECTION_ICE
 #endif
 
+#ifdef SOLVE3D
+# define ANA_NUDGCOEF
+#endif
+
 /* point sources (rivers, line sources) */
 
 /* Not using Runoff now */
 #ifdef SOLVE3D
-# define RUNOFF
+# undef RUNOFF
+# define TWO_D_TRACER_SOURCE
 # undef ONE_TRACER_SOURCE
 #endif
 
@@ -196,16 +202,15 @@
 # define TIDES_ASTRO
 # undef POT_TIDES
 
-# define UV_DRAG_GRID
-# define ANA_DRAG
 #endif
+#define UV_DRAG_GRID
+#define ANA_DRAG
 #define LIMIT_BSTRESS
 #define UV_QDRAG
 
 /* Boundary conditions...careful with grid orientation */
 
 #define RADIATION_2D
-#define ANA_NUDGCOEF
 
 /* roms quirks */
 
@@ -219,7 +224,7 @@
 /*
 **  Biological model options.
 */
-#define BIOLOGY
+#undef BIOLOGY
 #define BIO_COBALT
 /* #define DEBUG_COBALT */
 /*#define COBALT_CONSERVATION_TEST */

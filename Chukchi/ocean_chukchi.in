@@ -3,7 +3,7 @@
 !
 !svn $Id$
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2017 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2019 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /import/c1/AKWATERS/kshedstrom/NGOA/External/varinfo.dat.cobalt
+     VARNAME = /import/c1/AKWATERS/kshedstrom/Arctic/External/varinfo.dat.cobalt
 
 ! Number of nested grids.
 
@@ -91,9 +91,9 @@ GridsInLayer =  1
 ! Grid dimension parameters. See notes below in the Glossary for how to set
 ! these parameters correctly.
 
-          Lm == 140           ! Number of I-direction INTERIOR RHO-points
-          Mm == 132           ! Number of J-direction INTERIOR RHO-points
-           N == 40            ! Number of vertical levels
+          Lm == 376           ! Number of I-direction INTERIOR RHO-points
+          Mm == 256           ! Number of J-direction INTERIOR RHO-points
+           N == 50            ! Number of vertical levels
 
         Nbed =  0             ! Number of sediment bed layers
 
@@ -107,9 +107,9 @@ GridsInLayer =  1
 ! indices (Istr,Iend) and (Jstr,Jend), [1:Ngrids].
 
 !      NtileI == 1                               ! I-direction partition
-       NtileI == 4                               ! I-direction partition
+       NtileI == 9                               ! I-direction partition
 ! ORDER MATTERS HERE!
-       NtileJ == 6                              ! J-direction partition
+       NtileJ == 16                             ! J-direction partition
 
 ! Set lateral boundary conditions keyword. Notice that a value is expected
 ! for each boundary segment per nested grid for each state variable.
@@ -201,11 +201,11 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-!      NTIMES == 118800
-       NTIMES == 259200
+!      NTIMES == 131760
+       NTIMES == 133200
           DT == 240.0d0
 !         DT == 200.0d0
-     NDTFAST == 10
+     NDTFAST == 30
 
 ! Model iteration loops parameters.
 
@@ -226,10 +226,10 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
        NRREC == 0
    LcycleRST == T
-        NRST == 3600
+        NRST == 1800
         NSTA == 15
         NFLT == 15
-!       NRST == 4320
+!       NRST == 2160
 !       NSTA == 18
 !       NFLT == 18
        NINFO == 1
@@ -414,7 +414,7 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  40171.0d0                  ! days (start of 2009)
+      DSTART =  29229.0d0                  ! days (early 1980)
 !     DSTART =  40202.0d0                  ! days (start of 2010)
   TIDE_START =  -1.0d0                     ! days
     TIME_REF =  19000101.0d0               ! yyyymmdd.dd
@@ -459,14 +459,14 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 ! point Sources/Sinks (like river runoff transport) and mass point
 ! Sources/Sinks (like volume vertical influx), [1:Ngrids].
 
-      LuvSrc == F                          ! horizontal momentum transport
+      LuvSrc == T                          ! horizontal momentum transport
        LwSrc == F                          ! volume vertical influx
 
 ! Logical switches (TRUE/FALSE) to activate tracers point Sources/Sinks
 ! (like river runoff) and to specify which tracer variables to consider:
 ! [1:NAT+NPT,Ngrids].  See glossary below for details.
 
-  LtracerSrc == F F                        ! temperature, salinity, inert
+  LtracerSrc == T T                        ! temperature, salinity, inert
 
 ! Logical switches (TRUE/FALSE) to read and process climatology fields.
 ! See glossary below for details.
@@ -954,8 +954,8 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input NetCDF file names, [1:Ngrids].
 
-     GRDNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/grid_Chukchi_3.nc
-     ININAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ic_2009-12-26.nc
+     GRDNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/grid_Chukchi_5.nc
+     ININAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/CHUKCHI5_ic_bio_GFDL-JAN.nc
 !    ININAME == chukchi_foo.nc
      ITLNAME == ocean_itl.nc
      IRPNAME == ocean_irp.nc
@@ -975,20 +975,25 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! line per entry with a vertical bar (|) symbol after each entry,
 ! except the last one.
 
-   NCLMFILES == 2                         ! number of climate files
-     CLMNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2009.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2010.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clm_2011.nc \
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_clim_bio.nc
+   NCLMFILES == 4                         ! number of climate files
+     CLMNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_clm_1980.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_clm_1981.nc \
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/Alk_bdry_1980.nc     |
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/Alk_bdry_1981.nc     \
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/DIC_bdry_1980.nc     |
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/DIC_bdry_1981.nc     \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_clim_bio.nc
 
-    NBCFILES == 3                          ! number of boundary files
-     BRYNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2009.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2010.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_sea_bdry_2011.nc \
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2009.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2010.nc |
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_ice_bdry_2011.nc \
-                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_bdry_bio_clima.nc
+    NBCFILES == 5                          ! number of boundary files
+     BRYNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_sea_bdry_1980.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_sea_bdry_1981.nc \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_ice_bdry_1980.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_ice_bdry_1981.nc \
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/Alk_clim_1980.nc     |
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/Alk_clim_1981.nc     \
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/DIC_clim_1980.nc     |
+		/center1/AKWATERS/kshedstrom/Chukchi/Files/DIC_clim_1981.nc     \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_bdry_bio.nc
 
 ! Input climatology nudging coefficients file name.
 
@@ -996,12 +1001,14 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-    NSSFFILES == 1                          ! number of boundary files
-     SSFNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/NWGOA3_rivers.nc
+    NSSFFILES == 2                          ! number of boundary files
+     SSFNAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/JRA_Chukchi_rivers_1980.nc |
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/JRA_Chukchi_rivers_1981.nc \
+                /center1/AKWATERS/kshedstrom/Chukchi/Files/river_tracers.nc
 
 ! Input tidal forcing file name.
 
-    TIDENAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi3_tides_otps.nc
+    TIDENAME == /center1/AKWATERS/kshedstrom/Chukchi/Files/Chukchi5_tides_otps.nc
 
 ! Input forcing NetCDF file name(s).
 !
@@ -1021,41 +1028,31 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! continuation (\) or a vertical bar (|) symbol after each entry, except
 ! the last one.
 
-    NFFILES == 15                          ! number of unique forcing files
+    NFFILES == 14                          ! number of unique forcing files
 
-    FRCNAME == /center1/AKWATERS/kate/JRA55-do/slp.2009.18Aug2017.nc   |
-    FRCNAME == /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2009.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2010.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Pair_2011.nc   \
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2009.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2010.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Qair_2011.nc   \
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2009.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2010.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Tair_2011.nc   \
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2009.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2010.nc   |
-               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_rain_2011.nc   \
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2009.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2010.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_swrad_2011.nc   \
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2009.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2010.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Uwind_2011.nc   \
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2009.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2010.nc   |
-              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_Vwind_2011.nc   \
-         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2009.nc   |
-         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2010.nc   |
-         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.3_lwrad_down_2011.nc   \
-                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2009.15Dec2016.nc |
-                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2010.15Dec2016.nc |
-                       /center1/AKWATERS/kate/JRA55-do/runoff_all.2011.15Dec2016.nc \
+    FRCNAME == /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Pair_1980.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Pair_1981.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Qair_1980.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Qair_1981.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Tair_1980.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Tair_1981.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_rain_1980.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_rain_1981.nc   \
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_snow_1980.nc   |
+               /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_snow_1981.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_swrad_1980.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_swrad_1981.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Uwind_1980.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Uwind_1981.nc   \
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Vwind_1980.nc   |
+              /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_Vwind_1981.nc   \
+         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_lwrad_down_1980.nc   |
+         /import/c1/AKWATERS/kate/JRA55-do/JRA55DO_1.4_lwrad_down_1981.nc   \
               /center1/AKWATERS/kshedstrom/CORE2/sss_fill_2004.nc \
-              /center1/AKWATERS/kshedstrom/Chukchi/Files/iron_sediment_CHUKCHI3.nc \
-              /center1/AKWATERS/kshedstrom/NGOA/Files/Mineral_Fe_Flux_PI_ROMS.nc \
-              /center1/AKWATERS/kshedstrom/NGOA/Files/Soluble_Fe_Flux_PI_ROMS.nc \
-              /center1/AKWATERS/kshedstrom/NGOA/Files/composite_CO2_MLO+GLO.nc
+              /center1/AKWATERS/kshedstrom/Chukchi/Files/iron_sediment_CHUKCHI5.nc \
+              /center1/AKWATERS/kshedstrom/Chukchi/Files/Mineral_Fe_Flux_PI_ROMS.nc \
+              /center1/AKWATERS/kshedstrom/Chukchi/Files/Soluble_Fe_Flux_PI_ROMS.nc \
+              /center1/AKWATERS/kshedstrom/Chukchi/Files/composite_CO2_MLO+GLO.nc
 
 ! Output NetCDF file names, [1:Ngrids].
 

@@ -2,7 +2,7 @@
 !  ROMS/TOMS IO NetCDF variables.
 !
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2018 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2019 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -231,15 +231,6 @@
   'w3dvar'
   1.0d0
 
-'AKt'                                            ! Output
-  'S-coordinate vertical momentum component'
-  'meter3 second-1'                                ! [m3/s]
-  'omega, scalar, series'
-  'ocean_time'
-  'idAclm'
-  'w3dvar'
-  1.0d0
-
 'rho'                                              ! Output
   'density anomaly'
   'kilogram meter-3'                               ! [kg/m3]
@@ -327,6 +318,11 @@
 !------------------------------------------------------------------------------
 !
 
+!
+!------------------------------------------------------------------------------
+!  Wet/dry masks.
+!------------------------------------------------------------------------------
+!
 'wetdry_mask_psi'                                  ! Input/Output
   'wet/dry mask on PSI-points'
   'nondimensional'
@@ -334,6 +330,33 @@
   'ocean_time'
   'idPwet'
   'p2dvar'
+  1.0d0
+
+'wetdry_mask_rho'                                  ! Input/Output
+  'wet/dry mask on RHO-points'
+  'nondimensional'
+  'wetdry_mask_rho, scalar, series'
+  'ocean_time'
+  'idRwet'
+  'r2dvar'
+  1.0d0
+
+'wetdry_mask_u'                                    ! Input/Output
+  'wet/dry mask on U-points'
+  'nondimensional'
+  'wetdry_mask_u, scalar, series'
+  'ocean_time'
+  'idUwet'
+  'u2dvar'
+  1.0d0
+
+'wetdry_mask_v'                                    ! Input/Output
+  'wet/dry mask on V-points'
+  'nondimensional'
+  'wetdry_mask_v, scalar, series'
+  'ocean_time'
+  'idVwet'
+  'v2dvar'
   1.0d0
 
 'wetdry_mask_rho'                                  ! Input/Output
@@ -1268,11 +1291,11 @@
   'r2dvar'
   1.0d0
 
-'friver'
+'Runoff'
   'Fresh water runoff from land'
   'kg/s/m^2'
   'runoff, scalar, series'
-  'time'
+  'runoff_time'
   'idRunoff'
   'r2dvar'
   1.0d0
@@ -1856,78 +1879,6 @@
   'nulvar'
   1.0d0
 
-'apond_west'
-  'surface meltwater fraction western boundary condition'
-  ' '
-  'apond_west, scalar, series'
-  'bry_time'
-  'idApdbc(iwest)'
-  'nulvar'
-  1.0d0
-
-'apond_east'
-  'surface meltwater fraction eastern boundary condition'
-  ' '
-  'apond_east, scalar, series'
-  'bry_time'
-  'idApdbc(ieast)'
-  'nulvar'
-  1.0d0
-
-'apond_north'
-  'surface meltwater fraction northern boundary condition'
-  ' '
-  'apond_north, scalar, series'
-  'bry_time'
-  'idApdbc(inorth)'
-  'nulvar'
-  1.0d0
-
-'apond_south'
-  'surface meltwater fraction southern boundary condition'
-  ' '
-  'apond_south, scalar, series'
-  'bry_time'
-  'idApdbc(isouth)'
-  'nulvar'
-  1.0d0
-
-'hpond_west'
-  'surface meltwater thickness western boundary condition'
-  'meter'
-  'hpond_west, scalar, series'
-  'bry_time'
-  'idHpdbc(iwest)'
-  'nulvar'
-  1.0d0
-
-'hpond_east'
-  'surface meltwater thickness eastern boundary condition'
-  'meter'
-  'hpond_east, scalar, series'
-  'bry_time'
-  'idHpdbc(ieast)'
-  'nulvar'
-  1.0d0
-
-'hpond_north'
-  'surface meltwater thickness northern boundary condition'
-  'meter'
-  'hpond_north, scalar, series'
-  'bry_time'
-  'idHpdbc(inorth)'
-  'nulvar'
-  1.0d0
-
-'hpond_south'
-  'surface meltwater thickness southern boundary condition'
-  'meter'
-  'hpond_south, scalar, series'
-  'bry_time'
-  'idHpdbc(isouth)'
-  'nulvar'
-  1.0d0
-
 'sig11_west'
   'ice stress component 11 western boundary condition'
   'N meter-1'
@@ -2110,33 +2061,33 @@
 
 !
 !------------------------------------------------------------------------------
-!  Atmospheric forcing variables from JRA55-do.
+!  Atmospheric forcing variables.
 !------------------------------------------------------------------------------
 !
 
-'psl'                                              ! Input
+'Pair'                                             ! Input
   'surface air pressure'
-  'Pascal'                                         ! [ROMS wants millibar]
+  'Pascal'                                       ! [ROMS wants millibar]
   'Pair, scalar, series'
-  'time'
+  'pair_time'
   'idPair'
   'r2dvar'
   0.01d0
 
-'tas_10m'                                          ! Input
+'Tair'                                             ! Input
   'surface air temperature'
   'Celsius'                                        ! [Kelvin]
   'Tair, scalar, series'
-  'time'
+  'tair_time'
   'idTair'
   'r2dvar'
   1.0d0
 
-'huss_10m'                                         ! Input
+'Qair'                                             ! Input
   'surface air relative humidity'
   'kg/kg'                                          ! [kg/kg]
   'Qair, scalar, series'
-  'time'
+  'qair_time'
   'idQair'
   'r2dvar'
   1.00d0                                           ! was percent
@@ -2150,11 +2101,11 @@
   'r2dvar'
   1.0d0
 
-'rsds'                                             ! Input/Output
+'swrad'                                            ! Input/Output
   'solar shortwave radiation flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
   'shortwave radiation, scalar, series'            ! [Celsius m/s]
-  'time'
+  'srf_time'                                       ! Output: [Watt/m2]
   'idSrad'
   'r2dvar'
   1.0d0
@@ -2165,24 +2116,6 @@
   'albedo, scalar, series'                         ! [Celsius m/s]
   'albedo_time'                                    ! Output: [fraction]
   'idAlbe'
-  'r2dvar'
-  1.0d0
-
-'rlds'                                             ! Input
-  'downwelling longwave radiation flux'
-  'watt meter-2'                                   ! Input:  [Watt/m2]
-  'downwelling longwave radiation, scalar, series' ! [Celsius m/s]
-  'time'
-  'idLdwn'
-  'r2dvar'
-  1.0d0
-
-'rlds'                                             ! Input/Output
-  'net longwave radiation flux'
-  'watt meter-2'                                   ! Input:  [Watt/m2]
-  'longwave radiation, scalar, series'             ! [Celsius m/s]
-  'time'
-  'idLrad'
   'r2dvar'
   1.0d0
 
@@ -2235,6 +2168,24 @@
 
 ! end atmospheric forcing for Cobalt BGC model
 
+'lwrad_down'                                       ! Input
+  'downwelling longwave radiation flux'
+  'watt meter-2'                                   ! Input:  [Watt/m2]
+  'downwelling longwave radiation, scalar, series' ! [Celsius m/s]
+  'lrf_time'
+  'idLdwn'
+  'r2dvar'
+  1.0d0
+
+'lwrad'                                            ! Input/Output
+  'net longwave radiation flux'
+  'watt meter-2'                                   ! Input:  [Watt/m2]
+  'longwave radiation, scalar, series'             ! [Celsius m/s]
+  'lrf_time'                                       ! Output: [Watt/m2]
+  'idLrad'
+  'r2dvar'
+  1.0d0
+
 'latent'                                           ! Input/Output
   'net latent heat flux'
   'watt meter-2'                                   ! Input:  [Watt/m2]
@@ -2253,20 +2204,20 @@
   'r2dvar'
   1.0d0
 
-'prrn'                                             ! Input
+'rain'                                             ! Input
   'rain fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'rain, scalar, series'
-  'time'
+  'rain_time'
   'idrain'
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'prsn'                                             ! Input
+'snow'                                             ! Input
   'snow fall rate'
   'kilogram meter-2 second-1'                      ! [kg m2/s]
   'snow, scalar, series'
-  'time'
+  'snow_time'
   'idsnow'
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
@@ -2280,20 +2231,20 @@
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
-'uas_10m'                                          ! Input
+'Uwind'                                            ! Input
   'surface u-wind component'
   'meter second-1'                                 ! [m/s]
   'u-wind, scalar, series'
-  'time'
+  'wind_time'
   'idUair'
   'r2dvar'
   1.0d0
 
-'vas_10m'                                          ! Input
+'Vwind'                                            ! Input
   'surface v-wind component'
   'meter second-1'                                 ! [m/s]
   'v-wind, scalar, series'
-  'time'
+  'wind_time'
   'idVair'
   'r2dvar'
   1.0d0
@@ -2862,8 +2813,7 @@
 
 !
 !------------------------------------------------------------------------------
-!  Climatotogy variables.  Active and passive climatology tracers variable
-!  metadata is set internally in "mod_ncparam".
+!  Climatotogy variables.
 !------------------------------------------------------------------------------
 !
 
@@ -2941,42 +2891,6 @@
 
 !
 !------------------------------------------------------------------------------
-!  Nudging to climatology time scales. We can have a generic variable for all
-!  tracer nudging time scales or individual variables for each active and
-!  passive tracer. The metadata for the individual variables is set internally
-!  in "mod_ncparam".
-!------------------------------------------------------------------------------
-!
-
-'M2_NudgeCoef'                                     ! Input
-  '2D momentum inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'M2_NudgeCoef, scalar'
-  'nulvar'
-  'idM2nc'
-  'r2dvar'
-  1.0d0
-
-'M3_NudgeCoef'                                     ! Input
-  '3D momentum inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'M3_NudgeCoef, scalar'
-  'nulvar'
-  'idM3nc'
-  'r3dvar'
-  1.0d0
-
-'tracer_NudgeCoef'                                 ! Input
-  'generic tracer inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'tracer_NudgeCoef, scalar'
-  'nulvar'
-  'idgTnc'
-  'r3dvar'
-  1.0d0
-
-!
-!------------------------------------------------------------------------------
 !  Adjoint sensitivy variables.  The units below are the same as the state.
 !  However, the input functional can have squared, energy, nondimensional,
 !  or other units.
@@ -3031,7 +2945,7 @@
 'temp'                                             ! Input
   'potential temperature functional'
   'Celsius'                                        ! [Celsius]
-  'temp, scalar, series'
+  'temp_time, scalar, series'
   'temp_time'
   'idTads(itemp)'
   'r3dvar'
@@ -3040,7 +2954,7 @@
 'salt'                                             ! Input
   'salinity functional'
   'nondimensional'                                 ! [PSU]
-  'salt, scalar, series'
+  'salt_time, scalar, series'
   'salt_time'
   'idTads(isalt)'
   'r3dvar'
@@ -3105,7 +3019,7 @@
 'temp'                                             ! Input
   'potential temperature impulse forcing'
   'Celsius'                                        ! [Celsius]
-  'temp, scalar, series'
+  'temp_time, scalar, series'
   'temp_time'
   'idTtlf(itemp)'
   'r3dvar'
@@ -3114,7 +3028,7 @@
 'salt'                                             ! Input
   'salinity functional'
   'nondimensional'                                 ! [PSU]
-  'salt, scalar, series'
+  'salt_time, scalar, series'
   'salt_time'
   'idTtlf(isalt)'
   'r3dvar'
@@ -3276,7 +3190,7 @@
   'dye concentration western boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_west_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(iwest,inert(i))'
   'nulvar'
   1.0d0
@@ -3285,7 +3199,7 @@
   'dye concentration eastern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_east_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(ieast,inert(i))'
   'nulvar'
   1.0d0
@@ -3294,7 +3208,7 @@
   'dye concentration southern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_south_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(isouth,inert(i))'
   'nulvar'
   1.0d0
@@ -3303,7 +3217,7 @@
   'dye concentration northern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_north_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(inorth,inert(i))'
   'nulvar'
   1.0d0
@@ -3885,6 +3799,7 @@
 !---------------------------------------------------------------------
 !
 
+
 'alk'
   'Alkalinity'
   'mol/kg'
@@ -4033,25 +3948,6 @@
   'felg, scalar, series'
   'ocean_time'
   'idRtrc(ifelg)'
-  'r3dvar'
-  1.0d0
-
-
-'femd'
-  'Medium Phytoplankton Iron'
-  'mol/kg'
-  'femd, scalar, series'
-  'ocean_time'
-  'idTvar(ifemd)'
-  'r3dvar'
-  1.0d0
-
-'river_femd'
-  'river runoff Medium Phytoplankton Iron'
-  'mol/kg'
-  'femd, scalar, series'
-  'ocean_time'
-  'idRtrc(ifemd)'
   'r3dvar'
   1.0d0
 
@@ -4223,25 +4119,6 @@
   'nlg, scalar, series'
   'ocean_time'
   'idRtrc(inlg)'
-  'r3dvar'
-  1.0d0
-
-
-'nmd'
-  'Medium Phytoplankton Nitrogen'
-  'mol/kg'
-  'nmd, scalar, series'
-  'ocean_time'
-  'idTvar(inmd)'
-  'r3dvar'
-  1.0d0
-
-'river_nmd'
-  'river runoff Medium Phytoplankton Nitrogen'
-  'mol/kg'
-  'nmd, scalar, series'
-  'ocean_time'
-  'idRtrc(inmd)'
   'r3dvar'
   1.0d0
 
@@ -4474,25 +4351,6 @@
   1.0d0
 
 
-'simd'
-  'Medium Phytoplankton Silicon'
-  'mol/kg'
-  'simd, scalar, series'
-  'ocean_time'
-  'idTvar(isimd)'
-  'r3dvar'
-  1.0d0
-
-'river_simd'
-  'river runoff Medium Phytoplankton Silicon'
-  'mol/kg'
-  'simd, scalar, series'
-  'ocean_time'
-  'idRtrc(isimd)'
-  'r3dvar'
-  1.0d0
-
-
 'sio4'
   'Silicate'
   'mol/kg'
@@ -4579,12 +4437,12 @@
   'r3dvar'
   1.0d0
 
-'nmd'
-  'medium Phytoplankton Nitrogen'
+'river_nmd'
+  'river medium Phytoplankton Nitrogen'
   'mol/kg'
-  'nmd, scalar, series'
+  'river_nmd, scalar, series'
   'ocean_time'
-  'idTclm(inmd)'
+  'idRtrc(inmd)'
   'r3dvar'
   1.0d0
 
@@ -4597,12 +4455,12 @@
   'r3dvar'
   1.0d0
 
-'simd'
-  'medium Phytoplankton Silicon'
+'river_simd'
+  'river medium Phytoplankton Silicon'
   'mol/kg'
-  'simd, scalar, series'
+  'river_simd, scalar, series'
   'ocean_time'
-  'idTclm(isimd)'
+  'idRtrc(isimd)'
   'r3dvar'
   1.0d0
 
@@ -4615,12 +4473,12 @@
   'r3dvar'
   1.0d0
 
-'femd'
-  'medium Phytoplankton Iron'
+'river_femd'
+  'river medium Phytoplankton Iron'
   'mol/kg'
-  'femd, scalar, series'
+  'river_femd, scalar, series'
   'ocean_time'
-  'idTclm(ifemd)'
+  'idRtrc(ifemd)'
   'r3dvar'
   1.0d0
 
@@ -4836,7 +4694,7 @@
   1.0d0
 
 'sio4_btf'
-  'Silicate bottom flux'
+  'Sillicate bottom flux'
   'mol m-2 s-1'
   'sio4_btf, scalar, series'
   'ocean_time'
@@ -4859,24 +4717,6 @@
   'jremin_ndet_100, scalar, series'
   'ocean_time'
   'iDbio2(ijremin_ndet_100)'
-  'r2dvar'
-  1.0d0
-
-'no3denit_sed'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'no3denit_sed, scalar, series'
-  'ocean_time'
-  'iDbio2(ino3denit_sed)'
-  'r2dvar'
-  1.0d0
-
-'jno3denit_wc_vint'
-  'sedimentary denitrification'
-  'mgC/m2/day'
-  'jno3denit_wc_vint, scalar, series'
-  'ocean_time'
-  'iDbio2(ijno3denit_wc_vint)'
   'r2dvar'
   1.0d0
 
@@ -4940,6 +4780,15 @@
   'npp_100, scalar, series'
   'ocean_time'
   'iDbio2(inpp_100)'
+  'r2dvar'
+  1.0d0
+
+'jno3denit_wc_vint'
+  'sedimentary denitrification'
+  'mgC/m2/day'
+  'jno3denit_wc_vint, scalar, series'
+  'ocean_time'
+  'iDbio2(ijno3denit_wc_vint)'
   'r2dvar'
   1.0d0
 
@@ -5303,6 +5152,14 @@
   'r2dvar'
   1.0d0
 
+'ndet_btm'
+  'N delta to Sediments'
+  'mol m-2 s-1'
+  'ndet_btm, scalar, series'
+  'ocean_time'
+  'iDbio2(indet_btm)'
+  'r2dvar'
+  1.0d0
 
 'chl'
   'Chlorophyll'
@@ -5574,15 +5431,6 @@
   'r3dvar'
   1.0d0
 
-'ndet_btm'
-  'N delta to Sediments'
-  'mol m-2 s-1'
-  'ndet_btm, scalar, series'
-  'ocean_time'
-  'iDbio2(indet_btm)'
-  'r2dvar'
-  1.0d0
-
 'ndet_flx'
   'N delta between layers'
   'mol m-2 s-1'
@@ -5709,12 +5557,12 @@
   'r3dvar'
   1.0d0
 
-'aggloss_lg'
-  'losses to aggregation large phyto '
+'agg_lim_md'
+  'aggregation limitation medium phyto '
   'mol/kg'
-  'aggloss_lg, scalar, series'
+  'agg_lim_md, scalar, series'
   'ocean_time'
-  'iDbio3(iaggloss_lg)'
+  'iDbio3(iagg_lim_md)'
   'r3dvar'
   1.0d0
 
@@ -5733,6 +5581,24 @@
   'aggloss_di, scalar, series'
   'ocean_time'
   'iDbio3(iaggloss_di)'
+  'r3dvar'
+  1.0d0
+
+'aggloss_lg'
+  'losses to aggregation large phyto '
+  'mol/kg'
+  'aggloss_lg, scalar, series'
+  'ocean_time'
+  'iDbio3(iaggloss_lg)'
+  'r3dvar'
+  1.0d0
+
+'aggloss_md'
+  'losses to aggregation medium phyto '
+  'mol/kg'
+  'aggloss_md, scalar, series'
+  'ocean_time'
+  'iDbio3(iaggloss_md)'
   'r3dvar'
   1.0d0
 
@@ -6373,43 +6239,6 @@
   1.0d0
 
 
-'femd_east'
-  'Medium Phytoplankton Iron eastern boundary condition'
-  'mol/kg'
-  'femd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_west'
-  'Medium Phytoplankton Iron western boundary condition'
-  'mol/kg'
-  'femd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_north'
-  'Medium Phytoplankton Iron northern boundary condition'
-  'mol/kg'
-  'femd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_south'
-  'Medium Phytoplankton Iron southern boundary condition'
-  'mol/kg'
-  'femd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,ifemd)'
-  'nulvar'
-  1.0d0
-
-
 'fesm_east'
   'Small Phytoplankton Iron eastern boundary condition'
   'mol/kg'
@@ -6739,43 +6568,6 @@
   'nlg_south, scalar, series'
   'ocean_time'
   'idTbry(isouth,inlg)'
-  'nulvar'
-  1.0d0
-
-
-'nmd_east'
-  'Medium Phytoplankton Nitrogen eastern boundary condition'
-  'mol/kg'
-  'nmd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,inmd)'
-  'nulvar'
-  1.0d0
-
-'nmd_west'
-  'Medium Phytoplankton Nitrogen western boundary condition'
-  'mol/kg'
-  'nmd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,inmd)'
-  'nulvar'
-  1.0d0
-
-'nmd_north'
-  'Medium Phytoplankton Nitrogen northern boundary condition'
-  'mol/kg'
-  'nmd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,inmd)'
-  'nulvar'
-  1.0d0
-
-'nmd_south'
-  'Medium Phytoplankton Nitrogen southern boundary condition'
-  'mol/kg'
-  'nmd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,inmd)'
   'nulvar'
   1.0d0
 
@@ -7220,43 +7012,6 @@
   'silg_south, scalar, series'
   'ocean_time'
   'idTbry(isouth,isilg)'
-  'nulvar'
-  1.0d0
-
-
-'simd_east'
-  'Medium Phytoplankton Silicon eastern boundary condition'
-  'mol/kg'
-  'simd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_west'
-  'Medium Phytoplankton Silicon western boundary condition'
-  'mol/kg'
-  'simd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_north'
-  'Medium Phytoplankton Silicon northern boundary condition'
-  'mol/kg'
-  'simd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_south'
-  'Medium Phytoplankton Silicon southern boundary condition'
-  'mol/kg'
-  'simd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,isimd)'
   'nulvar'
   1.0d0
 
@@ -8546,6 +8301,7 @@
   1.0d0
 
 !-------------------------------------------------------------
+! Cobalt variables here again ?
 ! BEST_NPZ variables
 !-------------------------------------------------------------
 
@@ -8719,7 +8475,7 @@
 'Ice Algae_east'
   'Ice algae concentration eastern boundary condition'
   'meter'
-  'Ice_algae_thick_east, scalar, series'
+  'snow_thick_east, scalar, series'
   'bry_time'
   'idIcePhLbc(ieast)'
   'nulvar'
@@ -9209,4 +8965,41 @@
   'idBgTh'
   'nulvar'
   1.0d0
+
+!
+!------------------------------------------------------------------------------
+!  Nudging to climatology time scales. We can have a generic variable for all
+!  tracer nudging time scales or individual variables for each active and
+!  passive tracer. The metadata for the individual variables is set internally
+!  in "mod_ncparam".
+!------------------------------------------------------------------------------
+!
+
+'M2_NudgeCoef'                                     ! Input
+  '2D momentum inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'M2_NudgeCoef, scalar'
+  'nulvar'
+  'idM2nc'
+  'r2dvar'
+  1.0
+
+'M3_NudgeCoef'                                     ! Input
+  '3D momentum inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'M3_NudgeCoef, scalar'
+  'nulvar'
+  'idM3nc'
+  'r3dvar'
+  1.0
+
+'tracer_NudgeCoef'                                 ! Input
+  'generic tracer inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'tracer_NudgeCoef, scalar'
+  'nulvar'
+  'idgTnc'
+  'r3dvar'
+  1.0
+
 

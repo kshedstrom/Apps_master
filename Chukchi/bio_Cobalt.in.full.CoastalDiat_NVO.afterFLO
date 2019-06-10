@@ -2,7 +2,7 @@
 !
 !svn $Id$
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2019 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2013 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -217,6 +217,7 @@
    k_no3_Lg == 2.25e-6
 
 !  k_no3_Md: Nutrient Limitation Parameters (phytoplankton) [mol NO3 kg-1]
+! Was   k_no3_Md == 1.5e-6
 
    k_no3_Md == 2.0e-6
 
@@ -270,13 +271,14 @@
 !       phyto_Sm 1.2 and 3.2, respectively.
 !  k_fe_2_n_Lg == 3.0e-6 * 106.0 / 16.0 * 3.2
 
-   k_fe_2_n_Lg == 3.578e-5
+   k_fe_2_n_Lg == 6.36e-5
 
 !  k_fe_2_n_Md: Nutrient Limitation Parameters (phytoplankton)  [mol Fe mol N-1]
 !  CAS: Check rationale for values with Nicolas
-!  NVO: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 2.5
+!  NVO: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 1.2
+!  CH: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 2.5
 
-   k_fe_2_n_Md == 4.96875e-5
+   k_fe_2_n_Md == 4.97e-5
 
 !  k_fe_2_n_Sm: Nutrient Limitation Parameters (phytoplankton)  [mol Fe mol N-1]
 !  k_fe_2_n_Sm == 3.0e-6 * 106.0 / 16.0
@@ -432,9 +434,9 @@
    c_2_n == 6.625
 
 !  alk_2_n_denit: Other stoichiometry [eq. alk mol NO3-1]
-!  alk_2_n_denit == 1.0
+!  alk_2_n_denit == 552.0/472.0
 
-   alk_2_n_denit == 1.0
+   alk_2_n_denit == 1.1694915
 
 !  p_2_n_static_Di: Other stoichiometry [mol P mol N-1]
 !  p_2_n_static_Di == 1.0/40.0
