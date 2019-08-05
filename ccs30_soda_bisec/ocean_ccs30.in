@@ -44,7 +44,7 @@
 
     MyAppCPP = WC13-NEMSAN
 
-! Input variable information file name.  This file needs to be processed
+! Input variable information filename.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
      VARNAME = varinfo.dat
@@ -170,6 +170,12 @@ ad_VolCons(north) ==  F                            ! northern boundary
       NTIMES =  350400 (40 years)
           DT == 3600.0d0
      NDTFAST == 45
+
+! Number of timesteps for computing observation impacts during the
+! analysis-forecast cycle.
+
+  NTIMES_ANA == 1440                               ! analysis interval
+  NTIMES_FCT == 1440                               ! forecast interval
 
 ! Model iteration loops parameters.
 
@@ -732,7 +738,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
   NC_DEFLATE =  1                 ! if non-zero, turn on deflate filter
    NC_DLEVEL =  1                 ! deflate level [0-9]
 
-! Input NetCDF file names, [1:Ngrids].
+! Input NetCDF filenames, [1:Ngrids].
 
      GRDNAME == Files/ccs30_grd.nc
      ININAME == Files/ccs30_soda_inibio_1985.nc
@@ -742,13 +748,32 @@ Dout(iTvdif) == T T                        ! vertical diffusion
      FWDNAME == /dev/null
      ADSNAME == /dev/null
 
-! Input lateral boundary and climatology file names.  The USER has the
+! Input adjoint forcing NetCDF filenames for computing observations
+! impacts during the analysis-forecast cycle. If the forecast error
+! metric is defined in state-space, then FOInameA and FOInameB should
+! be regular adjoint forcing files just like ADSname. If the forecast
+! error metric is defined in observation space (OBS_SPACE is activated)
+! then the forecast is initialized OIFnameA and OIFnameB (specified in
+! s4dvar.in input script) will have the structure of a 4D-Var observation
+! file.
+
+    FOInameA == roms_foi_a.nc
+    FOInameB == roms_foi_b.nc
+
+! Input NetCDF filenames for the forecasts initialized from the analysis
+! of the current 4D-Var cycle (FCTnameA) and initialized from the analysis
+! of the previous 4D-Var cycle (FCTnameB).
+
+    FCTnameA == roms_fct_a.nc
+    FCTnameB == roms_fct_b.nc
+
+! Input lateral boundary and climatology filenames.  The USER has the
 ! option to enter several files names per each nested grid.  For example,
 ! the USER may have a different files for velocity, ice, etc.
 ! The model will scan the file list and will read the needed data
 ! from the first file in the list containing the boundary field. Therefore,
-! the order of the file names is very important.  If multiple boundary
-! files per grid, enter first all the file names for grid 1, then grid 2,
+! the order of the filenames is very important.  If multiple boundary
+! files per grid, enter first all the filenames for grid 1, then grid 2,
 ! and so on.  Use a single line per entry with a continuation (\) symbol
 ! at the each entry, except the last one.
 ! The USER has the option to split input data time records into several
@@ -762,13 +787,13 @@ Dout(iTvdif) == T T                        ! vertical diffusion
      NBCFILES == 1                          ! number of boundary files
      BRYNAME == Files/ccs30_soda_brybio.nc
 
-! Input forcing NetCDF file name(s).  The USER has the option to enter
+! Input forcing NetCDF filename(s).  The USER has the option to enter
 ! several files names per each nested grid.  For example, the USER may
 ! have a different files for wind products, heat fluxes, rivers, tides,
 ! etc.  The model will scan the file list and will read the needed data
 ! from the first file in the list containing the forcing field. Therefore,
-! the order of the file names is very important.  If multiple forcing
-! files per grid, enter first all the file names for grid 1, then grid 2,
+! the order of the filenames is very important.  If multiple forcing
+! files per grid, enter first all the filenames for grid 1, then grid 2,
 ! and so on.  Use a single line per entry with a continuation (\) symbol
 ! at the each entry, except the last one.
 
@@ -782,7 +807,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
                 Files/ncar_lwrad_down_msk.1958-2006.CCS.nc \
                 Files/ncar_swrad_msk.1958-2006.CCS.nc
 
-! Output NetCDF file names, [1:Ngrids].
+! Output NetCDF filenames, [1:Ngrids].
 
      GSTNAME == /dev/null
      RSTNAME == rst.nc
@@ -824,10 +849,10 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !  MyAppCPP    Application C-preprocessing option.
 !
 !------------------------------------------------------------------------------
-! Variable information file name (string with a maximum of 256 characters).
+! Variable information filename (string with a maximum of 256 characters).
 !------------------------------------------------------------------------------
 !
-!  VARNAME     Input/Output variable information file name.  This file needs to
+!  VARNAME     Input/Output variable information filename.  This file needs to
 !              be processed first so all information arrays and indices can be
 !              initialized properly in "mod_ncparam.F".
 !
@@ -1020,7 +1045,7 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 ! Time-Stepping parameters.
 !------------------------------------------------------------------------------
 !
-!  NTIMES      Total number time-steps in current run.  If 3D configuration,
+! NTIMES       Total number of timesteps in current run.  If 3D configuration,
 !              NTIMES is the total of baroclinic time-steps.  If only 2D
 !              configuration, NTIMES is the total of barotropic time-steps.
 !
@@ -1265,6 +1290,14 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !              active (NAT) and inert (NPT) tracer variables.  If variable
 !              horizontal diffusion is activated, TNU4 is the mixing
 !              coefficient for the largest grid-cell in the domain.
+!
+! NTIMES_ANA   Total number of timesteps for computing observations impacts
+!                interval during the analysis cycle. It is only used when
+!                W4DPSAS_FCT_SENSITIVITY is activated.
+!
+! NTIMES_FCT   Total number of timesteps for computing observations impacts
+!                interval during the forecast cycle. It is only used when
+!                W4DPSAS_FCT_SENSITIVITY is activated.
 !
 !------------------------------------------------------------------------------
 ! Harmonic/biharmonic horizontal viscosity coefficients.
@@ -2052,40 +2085,40 @@ Dout(iTvdif) == T T                        ! vertical diffusion
 !                 between 0 and 9.
 !
 !------------------------------------------------------------------------------
-! Input/output NetCDF file names (string with a maximum of 256 characters).
+! Input/output NetCDF filenames (string with a maximum of 256 characters).
 !------------------------------------------------------------------------------
 !
-!  GRDNAME     Input grid file name.
-!  ININAME     Input nonlinear initial conditions file name. It can be a
+!  GRDNAME     Input grid filename.
+!  ININAME     Input nonlinear initial conditions filename. It can be a
 !                re-start file.
-!  IRPNAME     Input representer model initial conditions file name.
-!  ITLNAME     Input tangent linear model initial conditions file name.
-!  IADNAME     Input adjoint model initial conditions file name.
-!  FRCNAME     Input forcing fields file name.
-!  CLMNAME     Input climatology fields file name.
-!  BRYNAME     Input open boundary data file name.
-!  FWDNAME     Input forward solution fields file name.
-!  ADSNAME     Input adjoint sensitivity functional file name.
+!  IRPNAME     Input representer model initial conditions filename.
+!  ITLNAME     Input tangent linear model initial conditions filename.
+!  IADNAME     Input adjoint model initial conditions filename.
+!  FRCNAME     Input forcing fields filename.
+!  CLMNAME     Input climatology fields filename.
+!  BRYNAME     Input open boundary data filename.
+!  FWDNAME     Input forward solution fields filename.
+!  ADSNAME     Input adjoint sensitivity functional filename.
 !
-!  GSTNAME     Output GST analysis re-start file name.
-!  RSTNAME     Output re-start file name.
-!  HISNAME     Output history file name.
+!  GSTNAME     Output GST analysis re-start filename.
+!  RSTNAME     Output re-start filename.
+!  HISNAME     Output history filename.
 !  TLFNAME     Output impulse forcing for tangent linear (TLM and RPM) models.
-!  TLMNAME     Output tangent linear file name.
-!  ADJNAME     Output adjoint file name.
-!  AVGNAME     Output averages file name.
-!  DIANAME     Output diagnostics file name.
-!  STANAME     Output stations file name.
-!  FLTNAME     Output floats file name.
+!  TLMNAME     Output tangent linear filename.
+!  ADJNAME     Output adjoint filename.
+!  AVGNAME     Output averages filename.
+!  DIANAME     Output diagnostics filename.
+!  STANAME     Output stations filename.
+!  FLTNAME     Output floats filename.
 !
 !------------------------------------------------------------------------------
-! Input ASCII parameters file names.
+! Input ASCII parameters filenames.
 !------------------------------------------------------------------------------
 !
-!  APARNAM     Input assimilation parameters file name.
-!  SPOSNAM     Input stations positions file name.
-!  FPOSNAM     Input initial drifters positions file name.
-!  BPARNAM     Input biological parameters file name.
-!  SPARNAM     Input sediment transport parameters file name.
-!  USRNAME     USER's input generic file name.
+!  APARNAM     Input assimilation parameters filename.
+!  SPOSNAM     Input stations positions filename.
+!  FPOSNAM     Input initial drifters positions filename.
+!  BPARNAM     Input biological parameters filename.
+!  SPARNAM     Input sediment transport parameters filename.
+!  USRNAME     USER's input generic filename.
 !
