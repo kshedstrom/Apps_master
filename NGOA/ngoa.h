@@ -1,7 +1,7 @@
 /*
 ** svn $Id$
 *******************************************************************************
-** Copyright (c) 2002-2017 The ROMS/TOMS Group
+** Copyright (c) 2002-2019 The ROMS/TOMS Group
 **
 **   Licensed under a MIT/X style license
 **
@@ -9,14 +9,13 @@
 **
 *******************************************************************************
 **
-**  Options for NWGOA simulation
+**  Options for NGOA simulation
 */
 
 #define NO_HIS
 #define HDF5
 #define DEFLATE
 #define PERFECT_RESTART
-#undef OFFLINE_BIOLOGY
 
 /* general */
 
@@ -159,12 +158,11 @@
 #  undef ANA_SRFLUX
 #  undef ALBEDO_CLOUD
 #  define ALBEDO_CURVE  /* for water */
-#  define ICE_ALB_EC92  /* for ice */
-#  undef ALBEDO_CSIM   /* for ice */
-#  undef ALBEDO_FILE  /* for both */
+#  undef ICE_ALB_EC92   /* for ice */
+#  define ALBEDO_CSIM   /* for ice */
+#  undef ALBEDO_FILE    /* for both */
 #  undef LONGWAVE
 # endif
-# define SCORRECTION
 #else
 # define ANA_SMFLUX
 # define ANA_STFLUX
@@ -174,6 +172,7 @@
 /* surface and side corrections */
 
 #ifdef SOLVE3D
+# define SCORRECTION
 # define NO_SCORRECTION_ICE
 #endif
 
@@ -202,9 +201,9 @@
 # define TIDES_ASTRO
 # undef POT_TIDES
 
-# define UV_DRAG_GRID
-# define ANA_DRAG
 #endif
+#define UV_DRAG_GRID
+#define ANA_DRAG
 #define LIMIT_BSTRESS
 #define UV_QDRAG
 
