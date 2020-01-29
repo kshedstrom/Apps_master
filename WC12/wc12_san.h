@@ -15,9 +15,6 @@
 #define MIX_S_UV
 #define UV_QDRAG
 #undef DIAGNOSTICS_UV
-#undef  TS_MPDATA
-#define TS_U3HADVECTION
-#define TS_C4VADVECTION
 #define TS_DIF2
 #define MIX_GEO_TS
 #define SALINITY
