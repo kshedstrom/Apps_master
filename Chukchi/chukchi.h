@@ -97,7 +97,8 @@
 #ifdef SOLVE3D
 # undef TS_U3HADVECTION
 # undef TS_C4VADVECTION
-# define TS_MPDATA
+# undef TS_MPDATA
+# define TS_HSIMT
 #endif
 
 #define UV_VIS2
@@ -159,6 +160,8 @@
 #  undef ICE_ALB_EC92   /* for ice */
 #  define ALBEDO_CSIM   /* for ice */
 #  undef ALBEDO_FILE    /* for both */
+#  undef ALBEDO_DIRDIFF
+#  define ICE_SHORTWAVE_R
 #  undef LONGWAVE
 # endif
 #else
