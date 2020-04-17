@@ -1,7 +1,7 @@
 /*
 ** svn $Id$
 *******************************************************************************
-** Copyright (c) 2002-2019 The ROMS/TOMS Group
+** Copyright (c) 2002-2020 The ROMS/TOMS Group
 **
 **   Licensed under a MIT/X style license
 **
@@ -93,13 +93,6 @@
 
 #define UV_ADV
 #define UV_COR
-
-#ifdef SOLVE3D
-# undef TS_U3HADVECTION
-# undef TS_C4VADVECTION
-# undef TS_MPDATA
-# define TS_HSIMT
-#endif
 
 #define UV_VIS2
 #undef UV_SMAGORINSKY

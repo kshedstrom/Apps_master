@@ -2,7 +2,7 @@
 !
 !svn $Id$
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2019 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2020 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -217,6 +217,7 @@
    k_no3_Lg == 2.25e-6
 
 !  k_no3_Md: Nutrient Limitation Parameters (phytoplankton) [mol NO3 kg-1]
+! Was   k_no3_Md == 1.5e-6
 
    k_no3_Md == 2.0e-6
 
@@ -270,13 +271,14 @@
 !       phyto_Sm 1.2 and 3.2, respectively.
 !  k_fe_2_n_Lg == 3.0e-6 * 106.0 / 16.0 * 3.2
 
-   k_fe_2_n_Lg == 3.578e-5
+   k_fe_2_n_Lg == 6.36e-5
 
 !  k_fe_2_n_Md: Nutrient Limitation Parameters (phytoplankton)  [mol Fe mol N-1]
 !  CAS: Check rationale for values with Nicolas
-!  NVO: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 2.5
+!  NVO: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 1.2
+!  CH: k_fe_2_n_Md == 3.0e-6 * 106.0 / 16.0 * 2.5
 
-   k_fe_2_n_Md == 4.96875e-5
+   k_fe_2_n_Md == 4.97e-5
 
 !  k_fe_2_n_Sm: Nutrient Limitation Parameters (phytoplankton)  [mol Fe mol N-1]
 !  k_fe_2_n_Sm == 3.0e-6 * 106.0 / 16.0
@@ -432,9 +434,9 @@
    c_2_n == 6.625
 
 !  alk_2_n_denit: Other stoichiometry [eq. alk mol NO3-1]
-!  alk_2_n_denit == 1.0
+!  alk_2_n_denit == 552.0/472.0
 
-   alk_2_n_denit == 1.0
+   alk_2_n_denit == 1.1694915
 
 !  p_2_n_static_Di: Other stoichiometry [mol P mol N-1]
 !  p_2_n_static_Di == 1.0/40.0
@@ -1214,6 +1216,38 @@
 
        TNUDG == 36*360.0d0                        ! days
 
+! Set horizontal and vertical advection schemes for biological tracers.
+! A different advection scheme is allowed for each tracer. For example,
+! a positive-definite (monotonic) algorithm can be activated for
+! salinity and biological tracers, while a different one is set for
+! temperature. [1:NAT+NPT,Ngrids] values are expected.
+!
+!   Keyword    Advection Algorithm
+!
+!   A4         4th-order Akima (horizontal/vertical)
+!   C2         2nd-order centered differences (horizontal/vertical)
+!   C4         4th-order centered differences (horizontal/vertical)
+!   HSIMT      3th-order HSIMT-TVD (horizontal/vertical)
+!   MPDATA     recursive flux corrected MPDATA (horizontal/vertical)
+!   SPLINES    parabolic splines (only vertical)
+!   SU3        split third-order upstream (horizontal/vertical)
+!   U3         3rd-order upstream-biased (only horizontal)
+!
+! The user has the option of specifying the full Keyword or the first
+! two letters, regardless if using uppercase or lowercase. If nested
+! grids, specify values for each grid.
+
+   Hadvection == HSIMT
+
+   Vadvection == HSIMT
+
+! Adjoint-based algorithms can have different horizontal and schemes
+! for active and inert tracers.
+
+ad_Hadvection == U3                             ! idbio(:), compact
+
+ad_Vadvection == C4                             ! idbio(:), compact
+
 ! Logical switches (TRUE/FALSE) to activate writing of biological tracers
 ! into HISTORY output file: [1:NBT,Ngrids].
 
@@ -1344,3 +1378,95 @@ Dout(iC_2_chl_md) == T
   LnudgeTCLM == 36*T
   LtracerSrc == 36*T
 
+!------------------------------------------------------------------------------
+! Tracer advection scheme.
+!------------------------------------------------------------------------------
+!
+! It is more advantageous to set the horizontal and vertical advection schemes
+! for each tracer with switches instead of a single CPP flag for all of them.
+! Positive-definite and monotonic algorithms (i.e., MPDATA and HSIMT) are
+! appropriate and useful for positive fields like salinity, inert, biological,
+! and sediment tracers.  However, since the temperature has a dynamic range
+! with negative and positive values in the ocean, other advection schemes are
+! more appropriate.
+!
+! Currently, the following tracer advection schemes are available and are
+! activated using the associated Keyword:
+!
+!   Keyword    Advection Algorithm
+!
+!   A4         4th-order Akima (horizontal/vertical)
+!   C2         2nd-order centered differences (horizontal/vertical)
+!   C4         4th-order centered differences (horizontal/vertical)
+!   HSIMT      3th-order HSIMT with TVD limiter (horizontal/vertical)
+!   MPDATA     recursive flux corrected MPDATA (horizontal/vertical)
+!   SPLINES    parabolic splines reconstruction (only vertical)
+!   SU3        split third-order upstream (horizontal/vertical)
+!   U3         3rd-order upstresm-bias (only horizontal)
+!
+! The user has the option of specifying the full Keyword or the first
+! two letters, regardless if using uppercase or lowercase.
+!
+! If using either HSIMT (Wu and Zhu, 2010) or MPDATA (Margolin and
+! Smolarkiewicz, 1998) options, the user needs to set the same scheme
+! for both horizontal and vertical advection to preserve monotonicity.
+!
+! Hadvection     Horizontal advection for each active (temperature and
+!                  salinity) and inert tracers, [1:NAT+NPT,Ngrids]
+!                  values are expected.
+!
+! Vadvection     Vertical advection for each active (temperature and
+!                  salinity) and inert tracers, [1:NAT+NPT,Ngrids]
+!                  values are expected.
+!
+! ad_Hadvection  Horizontal advection for each active (temperature and
+!                  salinity) and inert tracers in the adjoint-based
+!                  algorithms, [1:NAT+NPT,Ngrids] values are expected.
+!
+! ad_Vadvection  Vertical advection for each active (temperature and
+!                  salinity) and inert tracers in the adjoint-based
+!                  algorithms, [1:NAT+NPT,Ngrids] values are expected.
+!
+! Examples:
+!
+!  Hadvection == A4       \                     ! temperature
+!                MPDATA   \                     ! salinity
+!                HSIMT    \                     ! dye_01, inert(1)
+!                HSIMT                          ! dy2_02, inert(2)
+!
+!  Vadvection == A4       \                     ! temperature
+!                MPDATA   \                     ! salinity
+!                HSIMT    \                     ! dye_01, inert(1)
+!                HSIMT                          ! dye_02, inert(2)
+!
+! or in nested applications
+!
+!  Hadvection == U3       \                     ! temperature, Grid 1
+!                U3       \                     ! temperature, Grid 2
+!                U3       \                     ! temperature, Grid 3
+!                HSIMT    \                     ! salinity,    Grid 1
+!                HSIMT    \                     ! salinity,    Grid 2
+!                HSIMT                          ! salinity,    Grid 3
+!
+!  Vadvection == C4       \                     ! temperature, Grid 1
+!                C4       \                     ! temperature, Grid 2
+!                C4       \                     ! temperature, Grid 3
+!                HSIMT    \                     ! salinity,    Grid 1
+!                HSIMT    \                     ! salinity,    Grid 2
+!                HSIMT                          ! salinity,    Grid 3
+!
+! It is convinient to use the compact specification format for biological and
+! sediment passive tracers as:
+!
+!  Hadvection == HSIMT                          ! idbio(:), compact
+!
+!
+!  Vadvection == HSIMT                          ! idbio(:), compact
+!
+! when all the passive tracers have the same horizontal and vertical tracer
+! advection scheme.
+!
+!------------------------------------------------------------------------------
+! Lateral boundary conditions parameters.
+!------------------------------------------------------------------------------
+!

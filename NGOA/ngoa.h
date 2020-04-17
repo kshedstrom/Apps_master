@@ -1,7 +1,7 @@
 /*
 ** svn $Id$
 *******************************************************************************
-** Copyright (c) 2002-2019 The ROMS/TOMS Group
+** Copyright (c) 2002-2020 The ROMS/TOMS Group
 **
 **   Licensed under a MIT/X style license
 **
@@ -95,9 +95,9 @@
 
 #ifdef SOLVE3D
 # undef TS_A4HADVECTION
-# define TS_U3HADVECTION
-# define TS_C4VADVECTION
-# undef TS_MPDATA
+# undef TS_U3HADVECTION
+# undef TS_C4VADVECTION
+# define TS_HSIMT
 #endif
 
 #define UV_VIS2
@@ -190,7 +190,8 @@
 
 #define LTIDES
 #if defined LTIDES && !defined OFFLINE_BIOLOGY
-# if defined AVERAGES && !defined USE_DEBUG
+/*# if defined AVERAGES && !defined USE_DEBUG */
+# if defined AVERAGES
 #  define FILTERED
 # endif
 # define SSH_TIDES

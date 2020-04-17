@@ -2,7 +2,7 @@
 !  ROMS/TOMS IO NetCDF variables.
 !
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2019 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2020 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
@@ -921,24 +921,6 @@
   'ice divergence rate, scalar, series'
   'ocean_time'
   'idWdiv'
-  'r2dvar'
-  1.0d0
-
-'apond'
-  'surface melt water fraction on ice'
-  'meter'
-  'melt water fraction, scalar, series'
-  'ocean_time'
-  'idApond'
-  'r2dvar'
-  1.0d0
-
-'hpond'
-  'surface melt water thickness on ice'
-  'meter'
-  'melt water thickness, scalar, series'
-  'ocean_time'
-  'idHpond'
   'r2dvar'
   1.0d0
 
