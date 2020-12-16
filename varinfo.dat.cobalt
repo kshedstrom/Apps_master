@@ -4828,6 +4828,15 @@
   'r2dvar'
   1.0d0
 
+'pCO2'
+  'oceanic pCO2'
+  'ppmv'
+  'pco2, scalar, series'
+  'ocean_time'
+  'iDbio3(ipCO2)'
+  'r3dvar'
+  1.0d0
+
 'co2_flx'
   'air-sea fluxes in terms of contrib to DIC'
   'mol/kg'
@@ -7430,6 +7439,15 @@
   'ocean_time'
   'idVVav'
   'v3dvar'
+  1.0d0
+
+'speed'                                            ! Output
+  'time-averaged speed'
+  'meter2 second-2'                                ! [m2/s2]
+  'speed, scalar, series'
+  'ocean_time'
+  'idSUVav'
+  'r3dvar'
   1.0d0
 
 'tracer2'                                          ! Output

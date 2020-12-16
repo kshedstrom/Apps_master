@@ -1248,7 +1248,6 @@ ad_Hadvection == U3                             ! idbio(:), compact
 
 ad_Vadvection == C4                             ! idbio(:), compact
 
-
 ! Logical switches (TRUE/FALSE) to activate writing of biological tracers
 ! into HISTORY output file: [1:NBT,Ngrids].
 
@@ -1333,6 +1332,8 @@ Dout(iC_2_chl_di) == T
 Dout(iC_2_chl_sm) == T
 Dout(iC_2_chl_lg) == T
 Dout(iC_2_chl_md) == T
+
+Dout(ipCO2)       == T
 
    LBC(isTvar) ==   RadNud  RadNud  Clo  Clo \ ! insm Small Phytoplankton Nitrogen
                     RadNud  RadNud  Clo  Clo \ ! inmd Medium Phytoplankton Nitrogen
